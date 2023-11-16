@@ -93,7 +93,7 @@ function Login() {
       document.cookie = `token=${data.accessToken}`;
       setTimeout(() => {
         if (data.role === 'admin') {
-          window.location.replace(config.routes.adminRecent);
+          window.location.replace(config.routes.adminPending);
         } else {
           window.location.replace(config.routes.home);
         }
