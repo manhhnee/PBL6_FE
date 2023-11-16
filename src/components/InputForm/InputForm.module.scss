@@ -1,0 +1,33 @@
+.wrapper {
+  width: 100%;
+  background-color: #f0f0f0;
+  margin: 10px 0;
+  height: 55px;
+  border-radius: 55px;
+  display: grid;
+  grid-template-columns: 10% 85%;
+  padding: 0 0.4rem;
+  position: relative;
+
+  .icon {
+    text-align: center;
+    line-height: 55px;
+    color: #acacac;
+    transition: 0.5s;
+    font-size: 1.8rem;
+  }
+
+  input {
+    background: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: #333;
+    margin-right: 18px;
+  }
+
+  input::placeholder {
+    color: #333;
+    font-weight: 500;
+  }
+}

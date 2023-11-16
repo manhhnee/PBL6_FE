@@ -1,0 +1,55 @@
+.input-wrapper {
+  width: 100%;
+  background-color: #f0f0f0;
+  margin: 10px 0;
+  height: 55px;
+  border-radius: 55px;
+  display: grid;
+  grid-template-columns: 10% 85%;
+  padding: 0 0.4rem;
+  position: relative;
+
+  .icon {
+    text-align: center;
+    line-height: 55px;
+    color: #acacac;
+    transition: 0.5s;
+    font-size: 1.8rem;
+  }
+
+  .input {
+    background: none;
+    line-height: 1;
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: #333;
+    font-family: var(--font-family);
+    margin-right: 18px;
+  }
+
+  ul {
+    width: 100%;
+    position: absolute;
+    background-color: var(--white);
+    border: 1px solid var(--text-color);
+    border-radius: 12px;
+    padding: 12px;
+    z-index: 999;
+    left: 0;
+    top: 55px;
+    max-height: 220px;
+    overflow: auto;
+  }
+
+  li {
+    width: 100%;
+    cursor: pointer;
+    margin: 12px 0;
+  }
+
+  li:hover {
+    color: var(--black);
+    background-color: var(--gray);
+    border-radius: 5px;
+  }
+}

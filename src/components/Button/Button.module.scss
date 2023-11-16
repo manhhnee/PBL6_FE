@@ -1,0 +1,165 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: var(--font-family);
+  cursor: pointer;
+  background-color: var(--white);
+  border: 1px solid transparent;
+  user-select: none;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon + .title,
+.title + .icon {
+  margin-left: 20px;
+}
+
+.icon {
+  display: inline-block;
+  width: 24px;
+  text-align: center;
+}
+
+//Button types
+
+.rounded {
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  border-color: rgba(22, 24, 35, 0.12);
+
+  &:hover {
+    border-color: rgba(22, 24, 35, 0.2);
+    background-color: rgba(22, 24, 35, 0.03);
+  }
+}
+
+.primary {
+  color: var(--white);
+  background-color: var(--red);
+  border-color: var(--red);
+
+  &:hover {
+    color: var(--white);
+    border-color: var(--red);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
+  }
+}
+
+.white {
+  color: var(--blue);
+  background-color: var(--white);
+  border-color: var(--black);
+
+  &:hover {
+    border-color: var(--black);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)), #ece5e6;
+  }
+}
+
+.blue {
+  color: var(--white);
+  background-color: var(--blue);
+  border-color: var(--blue);
+
+  &:hover {
+    border-color: var(--blue);
+    background-color: #3c79f5;
+  }
+}
+
+.outline {
+  color: var(--primary);
+  border-color: currentColor;
+
+  &:hover {
+    border-color: currentColor;
+    background-color: rgba(254, 44, 85, 0.06);
+  }
+}
+
+.text {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.signin_signup {
+  width: 150px;
+  background-color: #5995fd;
+  height: 49px;
+  border-radius: 49px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.5s;
+  font-size: 1.4rem;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.animation {
+  margin: 0 6px;
+  width: 130px;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: 0.5s;
+  z-index: 1;
+  color: var(--white);
+  border: 2px solid var(--text-color);
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--white);
+    transition: all 0.5s;
+    z-index: -1;
+  }
+
+  &:hover {
+    color: var(--red);
+    &::before {
+      width: 100%;
+      left: 0;
+      right: auto;
+    }
+  }
+}
+
+//Button size
+.small {
+  min-width: 88px;
+  padding: 4px 16px;
+}
+
+.large {
+  min-width: 148px;
+  padding: 14px 16px;
+}

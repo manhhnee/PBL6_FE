@@ -1,0 +1,42 @@
+.order {
+  display: flex;
+  align-items: center;
+  background-color: var(--white);
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 5px 5px 5px var(--gray);
+}
+
+.order-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 30px;
+}
+
+.icon {
+  color: var(--primary);
+  margin-left: 20px;
+}
+
+.name-order,
+.day-order,
+.address,
+.price-order {
+  color: var(--text-color);
+  margin-left: auto;
+}
+
+.address {
+  max-width: 200px;
+  overflow: auto;
+}
+
+.price-order {
+  padding-right: 30px;
+  color: var(--primary);
+}
+
+.btn {
+  margin-right: 20px;
+}

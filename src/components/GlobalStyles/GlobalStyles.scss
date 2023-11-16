@@ -1,0 +1,102 @@
+@import 'normalize.css';
+
+:root {
+  --font-family: 'SF Pro Text', sans-serif;
+  --header-color: rgba(255, 255, 255, 0.8);
+  --black: #000;
+  --white: #fff;
+  --red: #f24c3d;
+  --red-warning: #d71313;
+  --blue: #793fdf;
+  --brown: #6c3428;
+  --orange: #ee9322;
+  --text-color: #454545;
+  --green: #748e63;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizespeed;
+  color: var(--text-color);
+  overflow-y: overlay;
+}
+
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+input[type='file'] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+input[type='file']::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+input[type='file']::file-selector-button {
+  visibility: hidden;
+  display: none;
+}
+body {
+  .tippy-box {
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    background-color: rgba(84, 84, 84, 0.92);
+  }
+
+  .tippy-arrow {
+    color: rgba(84, 84, 84, 0.92);
+  }
+
+  .tippy-content {
+    padding: 8px 9px;
+  }
+
+  .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
+    top: -8px;
+  }
+}

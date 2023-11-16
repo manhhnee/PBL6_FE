@@ -1,0 +1,111 @@
+.container {
+  padding: 12px;
+  padding-right: 50px;
+  flex: 1 1;
+  padding-left: 12px;
+  padding-top: 12px;
+  background-color: #f5f5fb;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.main-header {
+  font-size: 3.6rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.information-field {
+  padding-top: 30px;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-right: 100px;
+  width: 700px;
+}
+
+.header {
+  font-size: 2rem;
+  color: var(--black);
+  font-weight: 500;
+  margin-top: 18px;
+}
+
+.information,
+.text-field {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--text-color);
+}
+
+.description-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.save-btn {
+  margin-left: auto;
+}
+.changePass-btn {
+  margin-left: 20px;
+}
+
+.input-field {
+  display: flex;
+  padding-left: 200px;
+  align-items: center;
+}
+
+.input {
+  margin-right: 30px;
+
+  input {
+    font-size: 1.5rem;
+    color: var(--text-color);
+  }
+}
+
+.image {
+  width: 126px;
+  height: 126px;
+  border-radius: 9999px;
+  background-image: url('https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg');
+}
+
+.upload-btn {
+  height: 88px;
+  width: 577px;
+  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  background-color: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--text-color);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--text-color);
+    background-color: #f5f5fb;
+  }
+}
+
+.error-message {
+  color: var(--primary);
+  font-size: 1.4rem;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.upd-ava {
+  background-color: var(--blue);
+}

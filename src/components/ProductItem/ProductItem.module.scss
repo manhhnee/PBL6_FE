@@ -1,0 +1,43 @@
+.book-items {
+  padding-bottom: 22px;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 8px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 22px;
+  text-align: center;
+}
+
+.img {
+  width: 241px;
+  height: 270px;
+  clip-path: inset(15px);
+
+  &:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+    transition: all 0.5s ease-in-out;
+  }
+}
+
+.title {
+  font-size: 1.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font-size: 1.6rem;
+  color: var(--red);
+  text-transform: capitalize;
+}

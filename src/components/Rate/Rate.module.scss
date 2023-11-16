@@ -1,0 +1,42 @@
+.icon {
+  margin-right: 12px;
+}
+
+.star {
+  font-size: 1.2rem;
+  margin: 8px 0;
+}
+
+.icon-star {
+  color: var(--yellow);
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.icon-star.empty {
+  color: var(--text-color);
+}
+
+.rate {
+  display: flex;
+  align-items: center;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--gray);
+}
+
+.ava,
+.img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.comment-field {
+  margin-left: 40px;
+  flex: 1;
+}
+
+.name {
+  font-weight: 700;
+  color: #d14d72;
+}

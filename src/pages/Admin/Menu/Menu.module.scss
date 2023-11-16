@@ -1,0 +1,42 @@
+.states {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-state1,
+.btn-state2,
+.btn-state3 {
+  height: 118px;
+  font-size: 22px;
+  border-radius: 10px;
+  color: var(--white);
+  min-width: 222px;
+}
+
+.btn-state1 {
+  background-color: #fcb35c;
+}
+
+.btn-state2 {
+  background-color: #7f72d9;
+}
+
+.btn-state3 {
+  background-color: #6051bb;
+}
+
+.icon {
+  margin-right: 12px;
+}
+
+.number,
+.state {
+  font-size: 1.6rem;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.number {
+  font-weight: 600;
+}

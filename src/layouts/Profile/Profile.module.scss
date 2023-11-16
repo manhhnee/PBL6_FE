@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+//sidebar
+
+.btn {
+  position: relative;
+  background-color: #fafafd;
+  width: 100%;
+  height: 56px;
+  justify-content: left;
+  color: var(--black);
+  font-size: 1.6rem;
+  margin-top: 15px;
+
+  &:hover {
+    background-color: var(--hover-btn);
+  }
+
+  &:first-child {
+    margin-top: 60px;
+  }
+}
+
+.btn.active {
+  color: var(--blue);
+  border-right: 3px solid var(--blue);
+}

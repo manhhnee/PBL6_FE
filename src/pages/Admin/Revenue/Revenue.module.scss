@@ -1,0 +1,120 @@
+.revenue-field {
+  margin: 12px 0;
+}
+
+.header1 {
+  font-size: 3rem;
+  color: var(--black);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.product-item {
+  margin: 12px;
+}
+
+.number {
+  font-size: 1.8rem;
+  color: var(--black);
+}
+
+.date-field {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  color: var(--black);
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-right: 20px;
+}
+
+.input {
+  width: 300px;
+  cursor: pointer;
+}
+
+.chart {
+  margin-top: 32px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  margin-top: 32px;
+}
+
+.sold-product,
+.total-revenue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 2px solid var(--black);
+  padding: 12px;
+  margin: 12px;
+  cursor: default;
+  background-color: #f79327;
+}
+
+.header {
+  font-size: 1.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+}
+
+.number {
+  padding: 14px;
+  margin: 12px;
+  background-color: var(--gray);
+  color: var(--black);
+  border-radius: 12px;
+  border: 2px solid var(--black);
+  font-weight: 600;
+}
+
+.Top10 {
+  border: 1px solid var(--black);
+  border-radius: 12px;
+  margin: 12px;
+  padding: 12px;
+  cursor: default;
+  background-color: #88c6ed;
+}
+
+.product-item {
+  color: var(--black);
+  font-weight: 500;
+}
+
+.high-light {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.BestCustomer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name {
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--primary);
+}
