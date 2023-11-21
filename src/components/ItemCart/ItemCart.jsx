@@ -12,7 +12,6 @@ import styles from './ItemCart.module.scss';
 const cx = classNames.bind(styles);
 
 function BookItemCart({ data, onSelect }) {
-  console.log(data);
   const [isChecked, setIsChecked] = useState(false);
 
   const handleDeleteCart = async () => {
@@ -62,15 +61,12 @@ function BookItemCart({ data, onSelect }) {
       />
       <div className={cx('content-left')}>
         <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} className={cx('checkbox')} />
-        <Image
-          className={cx('img')}
-          src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b26aa8f-0173-409b-b30a-7ce2d88573a4/custom-nike-dunk-low-by-you.png"
-        ></Image>
+        <Image className={cx('img')} src={data.Shoes.Image}></Image>
       </div>
       <div className={cx('content-center')}>
-        <span className={cx('book-name')}>{data.name}</span>
-        <span className={cx('book-category')}>Color: {data.color}</span>
-        <span className={cx('book-price')}>{data.Price && formatCurrency(data.Price)}</span>
+        <span className={cx('book-name')}>{data.Shoes.name}</span>
+        <span className={cx('book-category')}>Size: {data.size}</span>
+        <span className={cx('book-price')}>{data.Shoes.price && formatCurrency(data.Shoes.price)}</span>
         <span className={cx('book-quantity')}>x{data.cart_item_infor.quantity}</span>
       </div>
       <div className={cx('content-right')}>

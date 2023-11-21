@@ -137,3 +137,27 @@
 .content {
   padding: 0 100px 50px;
 }
+
+.options {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 12px 0;
+}
+
+.payment-methods > label {
+  margin: 6px;
+}
+
+.error-message {
+  color: var(--red);
+  font-size: 1.4rem;
+}

@@ -1,4 +1,3 @@
-
 .slide-bar {
   margin-top: -60px;
   margin-left: -120px;
@@ -116,4 +115,15 @@
     background-color: #e9f5f5;
     transform: scale(1.1);
   }
+}
+
+.btn-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.btn {
+  color: var(--white);
+  background-color: var(--red);
 }

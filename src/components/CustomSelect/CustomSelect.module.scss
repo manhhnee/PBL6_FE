@@ -1,0 +1,37 @@
+.custom-select {
+  position: relative;
+}
+
+.select-value {
+  padding: 8px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.option-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  z-index: 999;
+}
+
+.search-input {
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.6rem;
+}
+
+.option {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: #f5f5f5;
+}

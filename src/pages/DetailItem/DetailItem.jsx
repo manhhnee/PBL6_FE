@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import axios from 'axios';
 import { Flip, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSpring, animated } from 'react-spring';
 
 import Button from '~/components/Button';
 import { Icon } from '@iconify/react';
@@ -10,14 +11,48 @@ import { useParams } from 'react-router-dom';
 import Rate from '~/components/Rate';
 import GetToken from '~/Token/GetToken';
 import styles from './DetailItem.module.scss';
+import Popup from '~/components/Popup';
+import AutoComplete from '~/components/AutoComplete';
+import InputForm from '~/components/InputForm';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function DetailItem() {
+  const [autocompleteInputValue, setAutocompleteInputValue] = useState('');
   const { id } = useParams();
   const [count, setCount] = useState(1);
   const [shoe, setShoe] = useState({});
+  const [shoeSize, setShoeSize] = useState([]);
   const [ratings, setRatings] = useState([]);
+  const [idSize, setIDSize] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessages, setErrorMessages] = useState({
+    address: '',
+  });
+  const [payload, setPayload] = useState({
+    phoneNumber: '',
+  });
+  const modalAnimation = useSpring({
+    opacity: isModalOpen ? 1 : 0,
+  });
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    if (!autocompleteInputValue.trim()) {
+      errors.address = 'Please enter your order address!';
+      isValid = false;
+    }
+    if (!payload.phoneNumber.trim()) {
+      errors.phoneNumber = 'Please enter your order phone number !';
+      isValid = false;
+    }
+
+    setErrorMessages(errors);
+
+    return isValid;
+  };
   function handleIncrement() {
     if (count >= 10) {
       setCount(10);
@@ -31,13 +66,14 @@ function DetailItem() {
       setCount(count - 1);
     }
   }
-  const handleAddToCart = async (id_shoes, quantity) => {
+  const handleAddToCart = async () => {
+    console.log(count, idSize);
     await axios
       .post(
         'http://localhost:4000/api/cart/add',
         {
-          quantity: quantity,
-          id_shoes: id_shoes,
+          quantity: count,
+          id_size_item: idSize,
         },
         {
           headers: {
@@ -53,15 +89,61 @@ function DetailItem() {
       });
   };
 
+  const handleCreateOneOrder = async (item, address, phoneNumber) => {
+    if (!GetToken()) {
+      toast.warning('Please login to order!');
+    } else {
+      try {
+        const response = await axios.post(
+          'http://localhost:4000/api/order/createOneItem',
+          {
+            Item: {
+              id_size_item: idSize,
+              quantity: count,
+              price: item.price,
+            },
+            address: address,
+            phoneNumber: phoneNumber,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${GetToken()}`,
+            },
+          },
+        );
+
+        toast.success(response.data.message);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } catch (error) {
+        toast.error(error.message || 'An error occurred while processing your request.');
+      }
+    }
+  };
+
   useEffect(() => {
     const getAPIDetailItem = async () => {
       const response = await axios.get(`http://localhost:4000/api/shoes/${id}`);
       setShoe(response.data.result);
+      setShoeSize(response.data.result.Size_items);
       setRatings(response.data.result.rating);
+
+      if (response.data.result.Size_items && response.data.result.Size_items.length > 0) {
+        setIDSize(response.data.result.Size_items[0].id);
+      }
     };
+
     getAPIDetailItem();
   }, [id]);
-  console.log();
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className={cx('container')}>
@@ -93,8 +175,20 @@ function DetailItem() {
             </div>
             <div className={cx('product-size')}>
               <div className={cx('title')}>SIZE</div>
-              <select className={cx('size')}>
-                <option className={cx('option')}>M</option>
+              <select
+                className={cx('size')}
+                onChange={(e) => {
+                  const selectedSizeId = e.target.value;
+                  setIDSize(selectedSizeId);
+                }}
+                value={idSize}
+              >
+                {shoeSize &&
+                  shoeSize.map((size) => (
+                    <option key={size.id} className={cx('option')} value={size.id}>
+                      {size.size}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -104,14 +198,14 @@ function DetailItem() {
               <span className={cx('quantity')}>{count}</span>
               <Icon className={cx('plus')} icon="typcn:plus" onClick={handleIncrement} />
             </div>
-            <Button animation className={cx('btn-buy')}>
+            <Button animation className={cx('btn-buy')} onClick={() => openModal()}>
               BUY NOW
             </Button>
             <Button
               animation
               className={cx('btn-add')}
               onClick={() => {
-                handleAddToCart(shoe.id, count);
+                handleAddToCart();
               }}
             >
               ADD TO CART
@@ -119,6 +213,32 @@ function DetailItem() {
           </div>
         </div>
       </div>
+      <Popup isOpen={isModalOpen} onRequestClose={() => closeModal()} width={String('500px')} height={'350px'}>
+        <animated.div style={modalAnimation}>
+          <h2>Payment confirmation</h2>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Enter address</div>
+            <AutoComplete setParentInputValue={setAutocompleteInputValue} />
+          </div>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Enter phone number</div>
+            <InputForm
+              placeholder={'Enter phone number'}
+              type="text"
+              value={payload.phoneNumber}
+              setValue={setPayload}
+              name={'phoneNumber'}
+              className={cx('input')}
+              leftIcon={faPhone}
+            />
+          </div>
+          <div className={cx('options')}>
+            <Button onClick={() => handleCreateOneOrder(shoe, autocompleteInputValue, payload.phoneNumber)} outline>
+              Confirm
+            </Button>
+          </div>
+        </animated.div>
+      </Popup>
       <div className={cx('extra-detail')}>
         <div className={cx('header-field')}>
           <span className={cx('header-rate')}>Rating</span>

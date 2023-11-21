@@ -1,0 +1,85 @@
+.wrapper {
+  padding-top: 20px;
+}
+
+.btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 50px;
+}
+
+.Brand-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.Brand {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc(100% / 6);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+  .image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  &:hover {
+    background-color: var(--gray);
+    border-radius: 5px;
+  }
+}
+
+.input-field {
+  padding-top: 20px;
+}
+
+.image {
+  width: 80px;
+  border-radius: 9999px;
+}
+
+.upload-btn {
+  height: 70px;
+  width: 100%;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  background-color: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--text-color);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--text-color);
+    background-color: #f5f5fb;
+  }
+}
+
+.upload-field {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  font-size: 2rem;
+  color: var(--black);
+  font-weight: 500;
+  margin-top: 18px;
+}
+
+.fullname {
+  display: flex;
+}
+
+.options {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}

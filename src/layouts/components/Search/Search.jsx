@@ -22,7 +22,7 @@ function Search() {
       return;
     }
     const fetchApi = async () => {
-      const response = await axios.get(`http://localhost:4000/api/shoes?search=${searchValue}&limit=10`);
+      const response = await axios.get(`http://localhost:4000/api/shoes?search=${searchValue}&limit=5`);
       setSearchResult(response.data.result);
     };
 
@@ -49,7 +49,7 @@ function Search() {
 
   const handleSearch = () => {
     if (searchValue.trim() !== '') {
-      window.location.href = `/allbook?search=${encodeURIComponent(searchValue)}`;
+      window.location.href = `/allProducts?search=${encodeURIComponent(searchValue)}`;
     }
   };
 

@@ -34,7 +34,7 @@ function Header() {
         },
       });
       console.log(response.data.user);
-      if (response.data.success === true) {
+      if ((response.data.success === true) & (localStorage.getItem('Role') === 'customer')) {
         setIsLogin(true);
         setInfor(response.data.user.inforUser);
       } else {

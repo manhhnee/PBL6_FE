@@ -18,13 +18,10 @@ const cx = classNames.bind(styles);
 
 function Cart() {
   const [autocompleteInputValue, setAutocompleteInputValue] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('cash'); // Mặc định là tiền mặt khi nhận hàng
   const [cartItems, setCartItems] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handlePaymentMethodChange = (event) => {
-    setPaymentMethod(event.target.value);
-  };
+
   const [payload, setPayload] = useState({
     phoneNumber: '',
   });
@@ -37,6 +34,11 @@ function Cart() {
 
     if (!autocompleteInputValue.trim()) {
       errors.address = 'Please enter your order address!';
+      isValid = false;
+    }
+
+    if (!payload.phoneNumber.trim()) {
+      errors.phoneNumber = 'Please enter your order phoneNumber!';
       isValid = false;
     }
 
@@ -64,25 +66,26 @@ function Cart() {
 
   const handleOrderAll = async (address, phoneNumber) => {
     if (orderItems.length === 0) {
-      toast.error('Please select  to pay');
+      toast.error('Please select to pay');
     } else {
       if (!validateForm()) {
         return;
       } else {
         const orderItemsPayload = orderItems.map((item) => ({
-          id_shoes: item.id_shoes,
-          quantity: item.quantity,
-          id_cartItem: item.id_cartItem,
-          price: item.price,
+          id_size_item: item.id,
+          quantity: item.cart_item_infor.quantity,
+          id_cartItem: item.cart_item_infor.id,
+          price: item.Shoes.price,
         }));
+        console.log(orderItemsPayload);
 
         await axios
           .post(
             'http://localhost:4000/api/order/create',
             {
+              cartItems: orderItemsPayload,
               address: address,
               phoneNumber: phoneNumber,
-              OrderItems: orderItemsPayload,
             },
             {
               headers: {
@@ -96,7 +99,7 @@ function Cart() {
             window.location.reload();
           })
           .catch((e) => {
-            alert(e);
+            toast.error(e.message);
           });
       }
     }
@@ -109,7 +112,6 @@ function Cart() {
           Authorization: `Bearer ${GetToken()}`,
         },
       });
-      console.log(response.data);
       const cartsData = await response.data;
       setCartItems(cartsData.Cart.Cart_Items);
     };
@@ -162,54 +164,34 @@ function Cart() {
         </div>
       )}
       ,
-      <Popup isOpen={isModalOpen} onRequestClose={() => closeModal()} width={String('500px')} height={String('400px')}>
+      <Popup isOpen={isModalOpen} onRequestClose={() => closeModal()} width={String('500px')} height={'350px'}>
         <animated.div style={modalAnimation}>
           <h2>Payment confirmation</h2>
           <div className={cx('input-field')}>
-            <div className={cx('header')}>Enter your address</div>
+            <div className={cx('header')}>Enter address</div>
             <AutoComplete setParentInputValue={setAutocompleteInputValue} />
-            {errorMessages.address && <div className={cx('error-message')}>{errorMessages.address}</div>}
           </div>
           <div className={cx('input-field')}>
-            <div className={cx('header')}>Enter your phone number</div>
+            <div className={cx('header')}>Enter phone number</div>
             <InputForm
-              placeholder=""
+              placeholder={'Enter phone number'}
               type="text"
               value={payload.phoneNumber}
               setValue={setPayload}
               name={'phoneNumber'}
               className={cx('input')}
               leftIcon={faPhone}
-            ></InputForm>
+            />
           </div>
           <div className={cx('options')}>
-            <div className={cx('payment-methods')}>
-              <label>
-                <input
-                  type="radio"
-                  value="cash"
-                  checked={paymentMethod === 'cash'}
-                  onChange={handlePaymentMethodChange}
-                />
-                Payment in cash upon receipt
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="paypal"
-                  checked={paymentMethod === 'paypal'}
-                  onChange={handlePaymentMethodChange}
-                />
-                Pay with PayPal
-              </label>
-            </div>
-            {paymentMethod === 'cash' ? (
-              <Button onClick={() => handleOrderAll(autocompleteInputValue, payload.phoneNumber)} outline>
-                Confirm
-              </Button>
-            ) : (
-              <PaypalAll address={autocompleteInputValue} orderItems={orderItems} />
-            )}
+            <Button
+              onClick={() => {
+                handleOrderAll(autocompleteInputValue, payload.phoneNumber);
+              }}
+              outline
+            >
+              Confirm
+            </Button>
           </div>
         </animated.div>
       </Popup>

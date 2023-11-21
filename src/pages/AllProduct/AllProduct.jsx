@@ -14,25 +14,12 @@ import styles from './AllProduct.module.scss';
 const cx = classNames.bind(styles);
 
 function AllBook() {
-  const items = [
-    {
-      id: 1,
-      image:
-        'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b26aa8f-0173-409b-b30a-7ce2d88573a4/custom-nike-dunk-low-by-you.png',
-      name: 'Item 1',
-      price: '12000',
-    },
-    {
-      id: 2,
-      image:
-        'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b26aa8f-0173-409b-b30a-7ce2d88573a4/custom-nike-dunk-low-by-you.png',
-      name: 'Item 2',
-      price: '12000',
-    },
-  ];
+  const [shoes, setShoes] = useState({});
+  const [categories, setCategories] = useState({});
+  const [brands, setBrands] = useState({});
   const location = useLocation();
   const { id, search } = queryString.parse(location.search);
-  const [descPrice, setDescPrice] = useState(2);
+  const [descPrice, setDescPrice] = useState(0);
   const idCategory = id || '';
   const searchValue = search || '';
   const [activeButton, setActiveButton] = useState(1);
@@ -41,8 +28,6 @@ function AllBook() {
     return storedPage ? parseInt(storedPage) : 1;
   });
   let [totalPage, setTotalPage] = useState();
-
-  console.log(descPrice);
 
   const pages = Array.from({ length: totalPage }, (_, index) => index + 1);
 
@@ -54,7 +39,15 @@ function AllBook() {
 
   const handleCategoryClick = (buttonId) => {
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('id', buttonId);
+    urlParams.set('idCategory', buttonId);
+    const newSearch = urlParams.toString();
+    const newUrl = `${window.location.pathname}?${newSearch}`;
+    window.location.href = newUrl;
+  };
+
+  const handleBrandClick = (buttonId) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('idBrand', buttonId);
     const newSearch = urlParams.toString();
     const newUrl = `${window.location.pathname}?${newSearch}`;
     window.location.href = newUrl;
@@ -65,24 +58,29 @@ function AllBook() {
     localStorage.setItem('page', page);
   }, [page]);
 
-  //   useEffect(() => {
-  //     const fetchApiBooks = async () => {
-  //       const response = await axios.get(
-  //         `http://localhost:5000/api/book?limit=100&category=${idCategory}&page=${page}&search=${searchValue}&DESC_Price=${descPrice}`,
-  //       );
-  //       const booksData = await response.data.books;
-  //       setBooks(booksData);
-  //       setTotalPage(response.data.totalPage);
-  //     };
+  useEffect(() => {
+    const fetchApiShoes = async () => {
+      const response = await axios.get(
+        `http://localhost:4000/api/shoes?limit=100&category=${idCategory}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
+      );
+      setShoes(response.data.result);
+      setTotalPage(response.data.totalPages);
+    };
 
-  //     const fetchApiCategories = async () => {
-  //       const response = await axios.get('http://localhost:5000/api/category');
-  //       const categoriesData = await response.data;
-  //       setCategories(categoriesData);
-  //     };
-  //     fetchApiCategories();
-  //     fetchApiBooks();
-  //   }, [idCategory, totalPage, page, searchValue, descPrice]);
+    const fetchApiCategories = async () => {
+      const response = await axios.get('http://localhost:4000/api/category/');
+      const categoriesData = await response.data.categories;
+      setCategories(categoriesData);
+    };
+    const fetchApiBrands = async () => {
+      const response = await axios.get('http://localhost:4000/api/brand/');
+      const brandsData = await response.data.brands;
+      setBrands(brandsData);
+    };
+    fetchApiCategories();
+    fetchApiShoes();
+    fetchApiBrands();
+  }, [idCategory, totalPage, page, searchValue, descPrice]);
 
   return (
     <div className={cx('wrapper')}>
@@ -93,7 +91,7 @@ function AllBook() {
           <FontAwesomeIcon className={cx('select-input__icon')} icon={faChevronDown}></FontAwesomeIcon>
           <ul className={cx('select-input__list')}>
             <li className={cx('select-input__item')}>
-              <Link onClick={() => setDescPrice(2)} href="" className={cx('select-input__link')}>
+              <Link onClick={() => setDescPrice(0)} href="" className={cx('select-input__link')}>
                 Price: Low to high
               </Link>
             </li>
@@ -108,25 +106,46 @@ function AllBook() {
           <span className={cx('select-input__label')}>Category</span>
           <FontAwesomeIcon className={cx('select-input__icon')} icon={faChevronDown}></FontAwesomeIcon>
           <ul className={cx('select-input__list')}>
-            {/* {categories.map((category) => {
-              return (
-                <li className={cx('select-input__item')} key={category.id}>
-                  <Link
-                    to={`${config.routes.allbook}?id=${category.id}&search=${encodeURIComponent(searchValue)}`}
-                    onClick={() => handleCategoryClick(category.id)}
-                    className={cx('select-input__link')}
-                  >
-                    {category.Name}
-                  </Link>
-                </li>
-              );
-            })} */}
+            {categories.length &&
+              categories.map((category) => {
+                return (
+                  <li className={cx('select-input__item')} key={category.id}>
+                    <Link
+                      to={`${config.routes.allProducts}?id=${category.id}&search=${encodeURIComponent(searchValue)}`}
+                      onClick={() => handleCategoryClick(category.id)}
+                      className={cx('select-input__link')}
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+        <div className={cx('select-input')}>
+          <span className={cx('select-input__label')}>Brand</span>
+          <FontAwesomeIcon className={cx('select-input__icon')} icon={faChevronDown}></FontAwesomeIcon>
+          <ul className={cx('select-input__list')}>
+            {brands.length &&
+              brands.map((brand) => {
+                return (
+                  <li className={cx('select-input__item')} key={brand.id}>
+                    <Link
+                      to={`${config.routes.allProducts}?id=${brand.id}&search=${encodeURIComponent(searchValue)}`}
+                      onClick={() => handleBrandClick(brand.id)}
+                      className={cx('select-input__link')}
+                    >
+                      {brand.name}
+                    </Link>
+                  </li>
+                );
+              })}
           </ul>
         </div>
       </div>
       <div className={cx('book-list')}>
         <ul className={cx('pagination')}>
-          <ProductItem items={items}></ProductItem>
+          <ProductItem items={shoes.length && shoes}></ProductItem>
           {pages.map((page, index) => {
             return (
               <Button

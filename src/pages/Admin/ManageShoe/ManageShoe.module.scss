@@ -1,0 +1,113 @@
+.wrapper {
+  margin-top: 20px;
+}
+.wrapper-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 0;
+}
+
+.btn {
+  min-width: 80px;
+}
+.search {
+  width: 40%;
+  height: 46px;
+  background-color: rgba(22, 24, 35, 0.06);
+  border-radius: 92px;
+  display: flex;
+  border: 1.5px solid transparent;
+  padding: 0 18px;
+  font-size: 1.5rem;
+}
+
+.header {
+  font-size: 2rem;
+  color: var(--black);
+  font-weight: 500;
+  margin-top: 18px;
+  z-index: 0;
+}
+
+.error-message {
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.input {
+  display: grid;
+  grid-template-columns: 10% 80%;
+}
+
+.image {
+  width: 126px;
+  height: 126px;
+  border-radius: 9999px;
+}
+
+.upload-btn {
+  height: 88px;
+  width: 577px;
+  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  background-color: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--text-color);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--text-color);
+    background-color: #f5f5fb;
+  }
+}
+
+.upload-field {
+  display: flex;
+  align-items: center;
+}
+.options {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.fixed-header {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+.input-select {
+  appearance: none;
+  padding: 0.5rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  width: 50%;
+  margin-top: 12px;
+}
+
+.input-select option {
+  padding: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.input-select::-ms-expand {
+  display: none;
+}
+
+.input-select::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  /* Add any other desired styles for the dropdown arrow */
+}

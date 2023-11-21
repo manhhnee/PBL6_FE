@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faTruckFast, faX } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faSpinner, faTruckFast, faX } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
 import { Flip, ToastContainer, toast } from 'react-toastify';
@@ -25,10 +25,12 @@ function History() {
           Authorization: `Bearer ${GetToken()}`,
         },
       });
-      setHistoryOrder(response.data.OrderList);
+      setHistoryOrder(response.data.result);
     };
     getApiHistoryOrder();
   }, []);
+
+  console.log(historyOrder);
 
   const handleCancelOrder = async (id) => {
     await axios
@@ -83,9 +85,9 @@ function History() {
             let iconComponent;
             let statusComponent;
             let btnComponent;
-            if (order.id_Status === 1) {
+            if (order.Status.status === 'đang chờ') {
               iconComponent = <FontAwesomeIcon icon={faSpinner} className={cx('icon')} spinPulse></FontAwesomeIcon>;
-              statusComponent = <span className={cx('status-name')}>Order is being prepared</span>;
+              statusComponent = <span className={cx('status-name')}>Order is pending</span>;
               btnComponent = (
                 <Button
                   onClick={() => {
@@ -97,13 +99,16 @@ function History() {
                   Cancel order
                 </Button>
               );
-            } else if (order.id_Status === 2) {
-              iconComponent = <FontAwesomeIcon icon={faTruckFast} className={cx('icon')} bounce></FontAwesomeIcon>;
-              statusComponent = <span className={cx('status-name')}>Order is being delivered</span>;
-            } else if (order.id_Status === 3) {
+            } else if (order.Status.status === 'đang chuẩn bị') {
               iconComponent = <FontAwesomeIcon icon={faCheckCircle} className={cx('icon')} beat></FontAwesomeIcon>;
-              statusComponent = <span className={cx('status-name')}>The order has been delivered successfully</span>;
-            } else if (order.id_Status === 4) {
+              statusComponent = <span className={cx('status-name')}>The order is being prepared</span>;
+            } else if (order.Status.status === 'đang giao') {
+              iconComponent = <FontAwesomeIcon icon={faTruckFast} className={cx('icon')} bounce></FontAwesomeIcon>;
+              statusComponent = <span className={cx('status-name')}>The order is being delivering</span>;
+            } else if (order.Status.status === 'giao thành công') {
+              iconComponent = <FontAwesomeIcon icon={faCircleCheck} className={cx('icon')} beatFade></FontAwesomeIcon>;
+              statusComponent = <span className={cx('status-name1')}>The order has been successfully</span>;
+            } else if (order.Status.status === 'đã hủy') {
               iconComponent = <FontAwesomeIcon icon={faX} className={cx('icon1')} beatFade></FontAwesomeIcon>;
               statusComponent = <span className={cx('status-name1')}>The order has been cancelled</span>;
             }
@@ -117,8 +122,8 @@ function History() {
                 <div className={cx('content-center')}>
                   <span className={cx('book-price')}>{order.totalPrice && formatCurrency(order.totalPrice)}</span>
                   <span className={cx('book-date')}>Order date: {formattedDate}</span>
-                  <span className={cx('book-address')}>Delivery address: {order.OrderAddress}</span>
-                  <span className={cx('book-paymethod')}>Payment methods: {order.Payment_Method}</span>
+                  <span className={cx('book-address')}>Delivery address: {order.order_address}</span>
+                  <span className={cx('book-paymethod')}>Order phone number: {order.order_phoneNumber}</span>
                 </div>
                 <div className={cx('content-right')}>
                   <div className={cx('status')}>

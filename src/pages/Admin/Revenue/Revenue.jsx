@@ -6,27 +6,11 @@ import { useEffect, useState } from 'react';
 import InputForm from '~/components/InputForm';
 import styles from './Revenue.module.scss';
 import moment from 'moment';
+import GetToken from '~/Token/GetToken';
 
 const cx = classNames.bind(styles);
 
 function Revenue() {
-  function getJwtFromCookie() {
-    //lấy token được lưu trong cookie ra
-    const name = 'token=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-    for (let i = 0; i < cookieArray.length; i++) {
-      let cookie = cookieArray[i];
-      while (cookie.charAt(0) === ' ') {
-        cookie = cookie.substring(1);
-      }
-      if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length);
-      }
-    }
-    return '';
-  }
-
   const [numOfProduct, setNumberOfProduct] = useState();
   const [revenueYear, setRevenueYear] = useState();
   const [profitYear, setProfitYear] = useState();
@@ -50,40 +34,55 @@ function Revenue() {
 
   useEffect(() => {
     const fetchApiRevenue = async (fromDate, toDate) => {
-      const response = await axios.get('http://localhost:5000/api/order/revenue', {
+      const response = await axios.get('http://localhost:4000/api/revenue', {
         params: {
-          dateMin: fromDate,
-          dateMax: toDate,
+          startDate: fromDate,
+          endDate: toDate,
         },
         headers: {
-          Authorization: `Bearer ${getJwtFromCookie()}`,
+          Authorization: `Bearer ${GetToken()}`,
         },
       });
+      console.log(response.data);
       const formattedData = response.data.chartRevenue.map((item) => ({
         revenue_date: moment(item.revenue_date).format('DD-MM-YYYY'),
         revenue: item.revenue,
         profit: item.profit,
       }));
       setData(formattedData);
-      console.log(response.data.chartRevenue);
     };
 
-    const fetchApiRevenueOfYear = async () => {
-      const response = await axios.get('http://localhost:5000/api/order/revenueOfYear', {
+    const fetchAPICustomers = async (fromDate, toDate) => {
+      const response = await axios.get('http://localhost:4000/api/revenue/customer', {
+        params: {
+          startDate: fromDate,
+          endDate: toDate,
+        },
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getJwtFromCookie()}`,
+          Authorization: `Bearer ${GetToken()}`,
         },
       });
-      setNumberOfProduct(response.data.NumberOfProducts);
-      setRevenueYear(response.data.RevenueofYear);
-      setProfitYear(response.data.profitOfYear);
-      setTopProduct(response.data.TopProduct);
-      setPotentialCustomer(response.data.potentialCustomer);
+      console.log(response.data.result.customers[0].fullName);
+      setPotentialCustomer(response.data.result.customers[0].fullName);
     };
 
-    fetchApiRevenueOfYear();
-    fetchApiRevenue(payload.fromDate, payload.toDate);
+    // const fetchApiRevenueOfYear = async () => {
+    //   const response = await axios.get('http://localhost:5000/api/order/revenueOfYear', {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: `Bearer ${GetToken()}`,
+    //     },
+    //   });
+    //   setNumberOfProduct(response.data.NumberOfProducts);
+    //   setRevenueYear(response.data.RevenueofYear);
+    //   setProfitYear(response.data.profitOfYear);
+    //   setTopProduct(response.data.TopProduct);
+    //   setPotentialCustomer(response.data.potentialCustomer);
+    // };
+
+    // fetchApiRevenueOfYear();
+    // fetchApiRevenue(payload.fromDate, payload.toDate);
+    fetchAPICustomers(payload.fromDate, payload.toDate);
   }, [payload.fromDate, payload.toDate]);
 
   return (
@@ -150,9 +149,7 @@ function Revenue() {
 
           <div className={cx('BestCustomer')}>
             <div className={cx('header')}>Potential customers</div>
-            <span className={cx('name')}>
-              {potentialCustomer && potentialCustomer.FirstName + ' ' + potentialCustomer.LastName}
-            </span>
+            <span className={cx('name')}>{potentialCustomer}</span>
             <span className={cx('number')}>{potentialCustomer.total_purchases} purchased product</span>
           </div>
           <div className={cx('revenue')}>

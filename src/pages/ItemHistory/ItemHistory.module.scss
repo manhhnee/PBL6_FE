@@ -1,0 +1,89 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+  margin: 20px;
+  border-radius: 10px;
+  background: var(--white);
+  box-shadow: 5px 5px 5px var(--text-color);
+}
+
+.content-left {
+  .img {
+    width: 90px;
+    height: 100px;
+  }
+
+  .star {
+    font-size: 1.2rem;
+  }
+}
+
+.content-center {
+  margin-left: 20px;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.book-name {
+  color: var(--black);
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.book-price {
+  color: var(--primary);
+}
+
+.book-quantity {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.content-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.status {
+  color: var(--blue);
+}
+
+.icon,
+.icon1 {
+  margin: 0 12px;
+}
+
+.icon1,
+.status-name1 {
+  color: var(--red);
+}
+
+.options {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.options1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.btn + .btn {
+  margin-left: 22px;
+}
+.header {
+  font-size: 2rem;
+  color: var(--black);
+  font-weight: 500;
+  margin: 18px 0;
+}
+.star {
+  font-size: 2rem;
+}

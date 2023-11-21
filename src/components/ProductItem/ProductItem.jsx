@@ -17,15 +17,16 @@ function ProductItem({ items }) {
   return (
     <div className={cx('book-items')}>
       <div className={cx('container')}>
-        {items.map((item) => {
-          return (
-            <Link key={item.id} onClick={scrollToTop} to={`/detailItem?id=${item.id}`} className={cx('item')}>
-              <Image src={item.image} className={cx('img')} />
-              <div className={cx('title')}>{item.name}</div>
-              <div className={cx('price')}>{item.price}</div>
-            </Link>
-          );
-        })}
+        {items &&
+          items.map((item) => {
+            return (
+              <Link key={item.id} onClick={scrollToTop} to={`/detailItem/${item.id}`} className={cx('item')}>
+                <Image src={item.image} className={cx('img')} />
+                <div className={cx('title')}>{item.name}</div>
+                <div className={cx('price')}>{item.price}</div>
+              </Link>
+            );
+          })}
       </div>
     </div>
   );

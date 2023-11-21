@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 
 import Button from '~/components/Button';
 import styles from './Home.module.scss';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 
@@ -82,6 +83,17 @@ function Home() {
               </div>
             );
           })}
+      </div>
+      <div className={cx('btn-wrap')}>
+        <Button
+          animation
+          className={cx('btn')}
+          onClick={() => {
+            window.location.replace(config.routes.allProducts);
+          }}
+        >
+          See all
+        </Button>
       </div>
     </div>
   );

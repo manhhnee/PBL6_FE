@@ -66,16 +66,9 @@ function Admin({ children }) {
         >
           Home
         </Button>
+
         <Button
-          to={config.routes.manageStaff}
-          leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faShoePrints}></FontAwesomeIcon>}
-          className={cx('btn', `${activeButton === 2 ? 'active' : ''}`)}
-          onClick={() => handleClick(2)}
-        >
-          Shoes manager
-        </Button>
-        <Button
-          to={config.routes.manageSupplier}
+          to={config.routes.manageBrand}
           leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faTypo3}></FontAwesomeIcon>}
           className={cx('btn', `${activeButton === 3 ? 'active' : ''}`)}
           onClick={() => handleClick(3)}
@@ -89,6 +82,14 @@ function Admin({ children }) {
           onClick={() => handleClick(4)}
         >
           Category management
+        </Button>
+        <Button
+          to={config.routes.manageShoes}
+          leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faShoePrints}></FontAwesomeIcon>}
+          className={cx('btn', `${activeButton === 2 ? 'active' : ''}`)}
+          onClick={() => handleClick(2)}
+        >
+          Shoes manager
         </Button>
         <Button
           to={config.routes.revenue}
