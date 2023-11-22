@@ -68,7 +68,7 @@ function BookItemHistory() {
         'http://localhost:4000/api/rating/add',
         {
           id_shoes: idShoe,
-          commemt: comment,
+          comment: comment,
           star: star,
         },
         {

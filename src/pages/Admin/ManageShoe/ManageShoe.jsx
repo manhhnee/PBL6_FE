@@ -64,17 +64,6 @@ function ManageShoe() {
     amount: null,
   });
 
-  const [errorMessages2, setErrorMessages2] = useState({
-    name: null,
-    category: null,
-    brand: null,
-    color: null,
-    price: null,
-    import_price: null,
-    description: null,
-    size: null,
-    amount: null,
-  });
   const validateForm = () => {
     let isValid = true;
     const errors = {};
@@ -100,35 +89,6 @@ function ManageShoe() {
     }
 
     setErrorMessages(errors);
-
-    return isValid;
-  };
-
-  const validateForm2 = () => {
-    let isValid = true;
-    const errors = {};
-
-    if (!payload2.name.trim()) {
-      errors.name = 'Please enter shoe name';
-      isValid = false;
-    }
-
-    if (!payload2.description.trim()) {
-      errors.description = 'Please enter a description';
-      isValid = false;
-    }
-
-    if (!payload2.price.toString().trim()) {
-      errors.price = 'Please enter selling price';
-      isValid = false;
-    }
-
-    if (!payload2.publisher.trim()) {
-      errors.publisher = 'Please enter publisher';
-      isValid = false;
-    }
-
-    setErrorMessages2(errors);
 
     return isValid;
   };
@@ -181,39 +141,35 @@ function ManageShoe() {
   };
 
   const handleAddshoe = async (idCategory, idBrand, name, price, import_price, description, color, image) => {
-    if (!validateForm2()) {
-      return;
-    } else {
-      await axios
-        .post(
-          'http://localhost:4000/api/shoes/add',
-          {
-            id_category: idCategory,
-            id_brand: idBrand,
-            name: name,
-            price: price,
-            import_price: import_price,
-            description: description,
-            color: color,
-            image: image,
+    await axios
+      .post(
+        'http://localhost:4000/api/shoes/add',
+        {
+          id_category: idCategory,
+          id_brand: idBrand,
+          name: name,
+          price: price,
+          import_price: import_price,
+          description: description,
+          color: color,
+          image: image,
+        },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${GetToken()}`,
           },
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${GetToken()}`,
-            },
-          },
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
-    }
+        },
+      )
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   };
 
   const handleAddShoeSize = async (size, amount) => {
@@ -533,7 +489,6 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faShoePrints}
             />
-            {errorMessages2.name && <div className={cx('error-message')}>{errorMessages2.name}</div>}
           </div>
           <div className={cx('input-field')}>
             <div className={cx('header')}>Price</div>
@@ -546,7 +501,6 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faMoneyBill}
             />
-            {errorMessages2.price && <div className={cx('error-message')}>{errorMessages2.price}</div>}
           </div>
           <div className={cx('input-field')}>
             <div className={cx('header')}>Import price</div>
@@ -559,7 +513,6 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faMoneyBill}
             />
-            {errorMessages2.price && <div className={cx('error-message')}>{errorMessages2.price}</div>}
           </div>
           <div className={cx('header')}>Description</div>
           <div className={cx('input-field')}>
@@ -572,7 +525,6 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faAudioDescription}
             />
-            {errorMessages2.description && <div className={cx('error-message')}>{errorMessages2.description}</div>}
           </div>
 
           <div className={cx('header')}>Color</div>
@@ -586,18 +538,15 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faAudioDescription}
             />
-            {errorMessages2.color && <div className={cx('error-message')}>{errorMessages2.color}</div>}
           </div>
 
           <div className={cx('header')}>Select category</div>
           <div className={cx('input-field')}>
             <CustomSelect data={categories} setId={setSelectedCategoryId}></CustomSelect>
-            {errorMessages2.category && <div className={cx('error-message')}>{errorMessages2.category}</div>}
           </div>
           <div className={cx('header')}>Select brand</div>
           <div className={cx('input-field')}>
             <CustomSelect data={brand} setId={setSelectedBrandId}></CustomSelect>
-            {errorMessages2.brand && <div className={cx('error-message')}>{errorMessages2.brand}</div>}
           </div>
           <div className={cx('header')}>Image of shoe</div>
           <div className={cx('input-field')}>
@@ -620,8 +569,6 @@ function ManageShoe() {
                   payload2.import_price,
                   payload2.description,
                   payload2.color,
-                  payload2.size,
-                  payload2.amount,
                   avatar,
                 )
               }
@@ -644,7 +591,6 @@ function ManageShoe() {
           <div className={cx('header')}>Select shoes</div>
           <div className={cx('input-field')}>
             <CustomSelect data={shoes} setId={setShoeIDSize}></CustomSelect>
-            {errorMessages2.category && <div className={cx('error-message')}>{errorMessages2.category}</div>}
           </div>
           <div className={cx('input-field')}>
             <div className={cx('header')}>Shoe size</div>
@@ -657,7 +603,6 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faShoePrints}
             />
-            {errorMessages.size && <div className={cx('error-message')}>{errorMessages.size}</div>}
           </div>
           <div className={cx('input-field')}>
             <div className={cx('header')}>Shoe amount</div>
@@ -670,7 +615,6 @@ function ManageShoe() {
               className={cx('input')}
               leftIcon={faShoePrints}
             />
-            {errorMessages.amount && <div className={cx('error-message')}>{errorMessages.amount}</div>}
           </div>
           <div className={cx('options')}>
             <Button onClick={() => handleAddShoeSize(payload.size, payload.amount)} outline>

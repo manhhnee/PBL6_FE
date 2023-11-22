@@ -1,18 +1,48 @@
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useSpring, animated } from 'react-spring';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flip, ToastContainer, toast } from 'react-toastify';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
+import GetToken from '~/Token/GetToken';
 import Image from '~/components/Image';
 import Button from '~/components/Button';
+import Popup from '../Popup';
 import styles from './Order.module.scss';
-import axios from 'axios';
-import { faCheckCircle, faX } from '@fortawesome/free-solid-svg-icons';
-import GetToken from '~/Token/GetToken';
 
 const cx = classNames.bind(styles);
 
 function Order({ data, icon }) {
+  const [orderList, setOrderList] = useState({});
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const modalAnimation1 = useSpring({
+    opacity: isModalOpen1 ? 1 : 0,
+  });
+
+  const openModal1 = () => {
+    setIsModalOpen1(true);
+  };
+
+  const closeModal1 = () => {
+    setIsModalOpen1(false);
+  };
+
+  useEffect(() => {
+    const fetchApiDetailOrder = async () => {
+      const response = await axios.get(`http://localhost:4000/api/order/13`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${GetToken()}`,
+        },
+      });
+      setOrderList(response.data.result.Order_items);
+    };
+    fetchApiDetailOrder();
+  }, [data]);
+
   if (!data) {
     return null;
   }
@@ -49,7 +79,13 @@ function Order({ data, icon }) {
     iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} spinPulse />;
     buttonComponent = (
       <div>
-        <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} outline>
+        <Button
+          onClick={() => {
+            openModal1();
+          }}
+          className={cx('btn')}
+          outline
+        >
           Get Detail
         </Button>
         <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
@@ -82,6 +118,7 @@ function Order({ data, icon }) {
     });
     return formatter.format(number);
   }
+
   return (
     <div className={cx('order')}>
       <ToastContainer
@@ -106,6 +143,22 @@ function Order({ data, icon }) {
       <div className={cx('address')}>{data.order_address}</div>
       <div className={cx('price-order')}>{data.totalPrice && formatCurrency(data.totalPrice)}</div>
       {buttonComponent}
+      <Popup isOpen={isModalOpen1} onRequestClose={() => closeModal1()} width={'700px'} height={'500px'}>
+        <animated.div style={modalAnimation1}>
+          <h2>Detail information</h2>
+          {orderList.length > 0 &&
+            orderList.map((orderItem) => {
+              return (
+                <div className={cx('information')}>
+                  <Image alt="Image" className={cx('order-image')} src={orderItem.Shoes.image}></Image>
+                  <span>Name: {orderItem.Shoes.name}</span>
+                  <span>{formatCurrency(orderItem.Shoes.price)}</span>
+                  <span> Amount: {orderItem.order_item_infor.quantity}</span>
+                </div>
+              );
+            })}
+        </animated.div>
+      </Popup>
     </div>
   );
 }
