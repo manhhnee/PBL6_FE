@@ -163,6 +163,7 @@ function BookItemHistory() {
       <div className={cx('container')}>
         {historyDetails.Order_items &&
           historyDetails.Order_items.map((order) => {
+            console.log(order);
             return (
               <div className={cx('content')} key={order.id}>
                 <div className={cx('content-left')}>
@@ -180,7 +181,7 @@ function BookItemHistory() {
                     {statusComponent}
                   </div>
                   <div className={cx('options')}>
-                    {idStatus === 4 ? (
+                    {idStatus === 4 && order.order_item_infor.isRate === 0 ? (
                       <Button
                         onClick={() => {
                           openModal();

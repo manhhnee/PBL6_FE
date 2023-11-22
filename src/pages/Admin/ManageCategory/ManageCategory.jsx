@@ -51,7 +51,7 @@ function ManageCategory() {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${GetToken()}`,
           },
         },

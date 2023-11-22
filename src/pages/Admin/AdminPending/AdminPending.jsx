@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import axios from 'axios';
-import { faCheckCircle, faSpinner, faTruckFast } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faCheckCircle, faSpinner, faTruckFast } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
 import Menu from '~/pages/Admin/Menu';
@@ -17,8 +17,10 @@ function AdminPending() {
       case 1:
         return faSpinner;
       case 2:
-        return faTruckFast;
+        return faBoxOpen;
       case 3:
+        return faTruckFast;
+      case 4:
         return faCheckCircle;
       default:
         return null;
@@ -43,7 +45,7 @@ function AdminPending() {
       <div className={cx('order-list')}>
         {orderList &&
           orderList.map((order) => {
-            return <Order data={order} icon={getIcon(order.id_Status)}></Order>;
+            return <Order data={order} icon={getIcon(order.id_status)}></Order>;
           })}
       </div>
     </div>

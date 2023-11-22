@@ -14,12 +14,12 @@ function Revenue() {
   const [numOfProduct, setNumberOfProduct] = useState();
   const [revenueYear, setRevenueYear] = useState();
   const [profitYear, setProfitYear] = useState();
-  const [topProduct, setTopProduct] = useState([]);
+  const [topCustomer, setTopCustomer] = useState([]);
   const [potentialCustomer, setPotentialCustomer] = useState({});
 
   const [payload, setPayload] = useState({
-    fromDate: '',
-    toDate: '',
+    fromDate: '2023-01-01',
+    toDate: '2023-12-12',
   });
 
   const [data, setData] = useState([]);
@@ -43,10 +43,9 @@ function Revenue() {
           Authorization: `Bearer ${GetToken()}`,
         },
       });
-      console.log(response.data);
-      const formattedData = response.data.chartRevenue.map((item) => ({
+      const formattedData = response.data.result.orders.map((item) => ({
         revenue_date: moment(item.revenue_date).format('DD-MM-YYYY'),
-        revenue: item.revenue,
+        revenue: item.totalPrice,
         profit: item.profit,
       }));
       setData(formattedData);
@@ -62,8 +61,8 @@ function Revenue() {
           Authorization: `Bearer ${GetToken()}`,
         },
       });
-      console.log(response.data.result.customers[0].fullName);
-      setPotentialCustomer(response.data.result.customers[0].fullName);
+      setTopCustomer(response.data.result.customers);
+      setPotentialCustomer(response.data.result.customers[0]);
     };
 
     // const fetchApiRevenueOfYear = async () => {
@@ -79,7 +78,7 @@ function Revenue() {
     //   setTopProduct(response.data.TopProduct);
     //   setPotentialCustomer(response.data.potentialCustomer);
     // };
-
+    fetchApiRevenue(payload.fromDate, payload.toDate);
     // fetchApiRevenueOfYear();
     // fetchApiRevenue(payload.fromDate, payload.toDate);
     fetchAPICustomers(payload.fromDate, payload.toDate);
@@ -132,39 +131,24 @@ function Revenue() {
         <div className={cx('header1')}>General statistics for a year</div>
         <div className={cx('content')}>
           <div className={cx('Top10')}>
-            <div className={cx('header')}>Top 10 best-selling products of the year</div>
+            <div className={cx('header')}>Top 20 best-selling customer of the year</div>
             <ul className={cx('products')}>
-              {topProduct &&
-                topProduct.map((product, index) => {
-                  const productNumber = index + 1;
+              {topCustomer &&
+                topCustomer.map((product, index) => {
+                  const customerNumber = index + 1;
                   return (
                     <li key={product.id} className={cx('product-item')}>
-                      {productNumber}. {product.product_name} with{' '}
-                      <span className={cx('high-light')}> {product.total_sold} product</span>
+                      {customerNumber}. {product.fullName} with{' '}
+                      <span className={cx('high-light')}> {formatCurrency(product.totalPrice)} total price</span>
                     </li>
                   );
                 })}
             </ul>
           </div>
-
           <div className={cx('BestCustomer')}>
             <div className={cx('header')}>Potential customers</div>
-            <span className={cx('name')}>{potentialCustomer}</span>
-            <span className={cx('number')}>{potentialCustomer.total_purchases} purchased product</span>
-          </div>
-          <div className={cx('revenue')}>
-            <div className={cx('sold-product')}>
-              <div className={cx('header')}>Total number of products sold</div>
-              <div className={cx('number')}>{numOfProduct && numOfProduct}</div>
-            </div>
-            <div className={cx('total-revenue')}>
-              <div className={cx('header')}>Total revenue for the year</div>
-              <div className={cx('number')}>{revenueYear && formatCurrency(revenueYear)}</div>
-            </div>
-            {/* <div className={cx('total-revenue')}>
-              <div className={cx('header')}>Total profit for the year</div>
-              <div className={cx('number')}>{profitYear && formatCurrency(profitYear)}</div>
-            </div> */}
+            <span className={cx('name')}>{potentialCustomer.fullName}</span>
+            <span className={cx('number')}>{formatCurrency(potentialCustomer.totalPrice)} total price</span>
           </div>
         </div>
       </div>

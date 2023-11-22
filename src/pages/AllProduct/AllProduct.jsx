@@ -18,9 +18,10 @@ function AllBook() {
   const [categories, setCategories] = useState({});
   const [brands, setBrands] = useState({});
   const location = useLocation();
-  const { id, search } = queryString.parse(location.search);
+  const { id1, id2, search } = queryString.parse(location.search);
   const [descPrice, setDescPrice] = useState(0);
-  const idCategory = id || '';
+  const idCategory = id1 || '';
+  const idBrand = id2 || '';
   const searchValue = search || '';
   const [activeButton, setActiveButton] = useState(1);
   const [page, setPage] = useState(() => {
@@ -39,7 +40,7 @@ function AllBook() {
 
   const handleCategoryClick = (buttonId) => {
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('idCategory', buttonId);
+    urlParams.set('id1', buttonId);
     const newSearch = urlParams.toString();
     const newUrl = `${window.location.pathname}?${newSearch}`;
     window.location.href = newUrl;
@@ -47,7 +48,7 @@ function AllBook() {
 
   const handleBrandClick = (buttonId) => {
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('idBrand', buttonId);
+    urlParams.set('id2', buttonId);
     const newSearch = urlParams.toString();
     const newUrl = `${window.location.pathname}?${newSearch}`;
     window.location.href = newUrl;
@@ -61,7 +62,7 @@ function AllBook() {
   useEffect(() => {
     const fetchApiShoes = async () => {
       const response = await axios.get(
-        `http://localhost:4000/api/shoes?limit=100&category=${idCategory}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
+        `http://localhost:4000/api/shoes?limit=100&category=${idCategory}&brand=${idBrand}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
       );
       setShoes(response.data.result);
       setTotalPage(response.data.totalPages);
@@ -80,7 +81,7 @@ function AllBook() {
     fetchApiCategories();
     fetchApiShoes();
     fetchApiBrands();
-  }, [idCategory, totalPage, page, searchValue, descPrice]);
+  }, [idCategory, idBrand, totalPage, page, searchValue, descPrice]);
 
   return (
     <div className={cx('wrapper')}>
@@ -111,7 +112,7 @@ function AllBook() {
                 return (
                   <li className={cx('select-input__item')} key={category.id}>
                     <Link
-                      to={`${config.routes.allProducts}?id=${category.id}&search=${encodeURIComponent(searchValue)}`}
+                      to={`${config.routes.allProducts}?search=${encodeURIComponent(searchValue)}`}
                       onClick={() => handleCategoryClick(category.id)}
                       className={cx('select-input__link')}
                     >

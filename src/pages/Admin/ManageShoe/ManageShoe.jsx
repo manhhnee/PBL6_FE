@@ -25,6 +25,7 @@ function ManageShoe() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [shoeId, setShoeID] = useState();
+  const [shoeIDSize, setShoeIDSize] = useState();
   const [search, setSearch] = useState('');
   const [filteredShoes, setFilteredShoes] = useState([]);
   const [payload, setPayload] = useState({
@@ -134,6 +135,7 @@ function ManageShoe() {
 
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
 
   const getshoes = async () => {
     try {
@@ -178,18 +180,7 @@ function ManageShoe() {
     setBrand(brandData);
   };
 
-  const handleAddshoe = async (
-    idCategory,
-    idBrand,
-    name,
-    price,
-    import_price,
-    description,
-    color,
-    size,
-    amount,
-    image,
-  ) => {
+  const handleAddshoe = async (idCategory, idBrand, name, price, import_price, description, color, image) => {
     if (!validateForm2()) {
       return;
     } else {
@@ -202,10 +193,8 @@ function ManageShoe() {
             name: name,
             price: price,
             import_price: import_price,
-            amount: amount,
             description: description,
             color: color,
-            size: size,
             image: image,
           },
           {
@@ -224,6 +213,36 @@ function ManageShoe() {
         .catch((err) => {
           toast.error(err);
         });
+    }
+  };
+
+  const handleAddShoeSize = async (size, amount) => {
+    try {
+      await axios
+        .post(
+          `http://localhost:4000/api/shoes/add_size/${shoeIDSize}`,
+          {
+            amount: amount,
+            size: size,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${GetToken()}`,
+            },
+          },
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        })
+        .catch((e) => {
+          toast.error(e);
+        });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -300,6 +319,9 @@ function ManageShoe() {
   const modalAnimation2 = useSpring({
     opacity: isModalOpen2 ? 1 : 0,
   });
+  const modalAnimation3 = useSpring({
+    opacity: isModalOpen3 ? 1 : 0,
+  });
 
   const closeModal1 = () => {
     setIsModalOpen1(false);
@@ -310,8 +332,18 @@ function ManageShoe() {
     setPayload({});
   };
 
+  const openModal3 = () => {
+    setIsModalOpen3(true);
+    setPayload({});
+  };
+
   const closeModal2 = () => {
     setIsModalOpen2(false);
+  };
+
+  const closeModal3 = () => {
+    setIsModalOpen3(false);
+    setShoeIDSize();
   };
 
   const columns = [
@@ -388,6 +420,9 @@ function ManageShoe() {
             <Button onClick={openModal2} leftIcon={<FontAwesomeIcon icon={faPlus} />} blue>
               Add shoe
             </Button>
+            <Button onClick={openModal3} leftIcon={<FontAwesomeIcon icon={faPlus} />} blue>
+              Add shoe size
+            </Button>
             <input
               type="text"
               placeholder="Search for shoes here"
@@ -431,19 +466,6 @@ function ManageShoe() {
             />
             {errorMessages.description && <div className={cx('error-message')}>{errorMessages.description}</div>}
           </div>
-          <div className={cx('header')}>Amount</div>
-          <div className={cx('input-field')}>
-            <InputForm
-              placeholder="Enter amount..."
-              type="text"
-              value={payload.amount}
-              setValue={setPayload}
-              name={'amount'}
-              className={cx('input')}
-              leftIcon={faAudioDescription}
-            />
-            {errorMessages.amount && <div className={cx('error-message')}>{errorMessages.amount}</div>}
-          </div>
           <div className={cx('header')}>Color</div>
           <div className={cx('input-field')}>
             <InputForm
@@ -456,19 +478,6 @@ function ManageShoe() {
               leftIcon={faAudioDescription}
             />
             {errorMessages.color && <div className={cx('error-message')}>{errorMessages.color}</div>}
-          </div>
-          <div className={cx('header')}>Size</div>
-          <div className={cx('input-field')}>
-            <InputForm
-              placeholder="Enter size..."
-              type="text"
-              value={payload.size}
-              setValue={setPayload}
-              name={'size'}
-              className={cx('input')}
-              leftIcon={faAudioDescription}
-            />
-            {errorMessages.size && <div className={cx('error-message')}>{errorMessages.size}</div>}
           </div>
           <div className={cx('header')}>Select category</div>
           <div className={cx('input-field')}>
@@ -565,19 +574,7 @@ function ManageShoe() {
             />
             {errorMessages2.description && <div className={cx('error-message')}>{errorMessages2.description}</div>}
           </div>
-          <div className={cx('header')}>Amount</div>
-          <div className={cx('input-field')}>
-            <InputForm
-              placeholder="Enter amount..."
-              type="text"
-              value={payload.amount}
-              setValue={setPayload2}
-              name={'amount'}
-              className={cx('input')}
-              leftIcon={faAudioDescription}
-            />
-            {errorMessages2.amount && <div className={cx('error-message')}>{errorMessages2.amount}</div>}
-          </div>
+
           <div className={cx('header')}>Color</div>
           <div className={cx('input-field')}>
             <InputForm
@@ -591,19 +588,7 @@ function ManageShoe() {
             />
             {errorMessages2.color && <div className={cx('error-message')}>{errorMessages2.color}</div>}
           </div>
-          <div className={cx('header')}>Size</div>
-          <div className={cx('input-field')}>
-            <InputForm
-              placeholder="Enter size..."
-              type="text"
-              value={payload.size}
-              setValue={setPayload2}
-              name={'size'}
-              className={cx('input')}
-              leftIcon={faAudioDescription}
-            />
-            {errorMessages2.size && <div className={cx('error-message')}>{errorMessages2.size}</div>}
-          </div>
+
           <div className={cx('header')}>Select category</div>
           <div className={cx('input-field')}>
             <CustomSelect data={categories} setId={setSelectedCategoryId}></CustomSelect>
@@ -642,6 +627,53 @@ function ManageShoe() {
               }
               outline
             >
+              Confirm
+            </Button>
+          </div>
+        </animated.div>
+      </Popup>
+      <Popup
+        isOpen={isModalOpen3}
+        onRequestClose={() => closeModal3()}
+        width={'600px'}
+        height={'500px'}
+        className={cx('popup')}
+      >
+        <animated.div style={modalAnimation3}>
+          <h2>Add shoe size</h2>
+          <div className={cx('header')}>Select shoes</div>
+          <div className={cx('input-field')}>
+            <CustomSelect data={shoes} setId={setShoeIDSize}></CustomSelect>
+            {errorMessages2.category && <div className={cx('error-message')}>{errorMessages2.category}</div>}
+          </div>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Shoe size</div>
+            <InputForm
+              placeholder="Enter size shoe..."
+              type="text"
+              value={payload.size}
+              setValue={setPayload}
+              name={'size'}
+              className={cx('input')}
+              leftIcon={faShoePrints}
+            />
+            {errorMessages.size && <div className={cx('error-message')}>{errorMessages.size}</div>}
+          </div>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Shoe amount</div>
+            <InputForm
+              placeholder="Enter amount shoe..."
+              type="text"
+              value={payload.amount}
+              setValue={setPayload}
+              name={'amount'}
+              className={cx('input')}
+              leftIcon={faShoePrints}
+            />
+            {errorMessages.amount && <div className={cx('error-message')}>{errorMessages.amount}</div>}
+          </div>
+          <div className={cx('options')}>
+            <Button onClick={() => handleAddShoeSize(payload.size, payload.amount)} outline>
               Confirm
             </Button>
           </div>

@@ -53,7 +53,11 @@ function Home() {
                     <img className={cx('category-image')} src={category.image} alt="category"></img>
                     <div className={cx('category-container')}>
                       <div className={cx('category-title')}>{category.name}</div>
-                      <Button animation className={cx('category-btn')}>
+                      <Button
+                        animation
+                        className={cx('category-btn')}
+                        to={`${config.routes.allProducts}?id1=${category.id}`}
+                      >
                         SHOP NOW
                       </Button>
                     </div>

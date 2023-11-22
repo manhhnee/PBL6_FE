@@ -45,12 +45,12 @@ function ManageBrand() {
       .post(
         'http://localhost:4000/api/brand/add',
         {
-          Name: name,
-          Image: image,
+          name: name,
+          image: image,
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${GetToken()}`,
           },
         },
@@ -173,7 +173,7 @@ function ManageBrand() {
             </div>
           </div>
           <div className={cx('options')}>
-            <Button onClick={() => handleAddBrand(payload.name, payload.image)} outline>
+            <Button onClick={() => handleAddBrand(payload.name, avatar)} outline>
               Confirm
             </Button>
           </div>

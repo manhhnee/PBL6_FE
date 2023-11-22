@@ -145,6 +145,8 @@ function DetailItem() {
     setIsModalOpen(false);
   };
 
+  console.log(idSize);
+
   return (
     <div className={cx('container')}>
       <ToastContainer
@@ -186,7 +188,7 @@ function DetailItem() {
                 {shoeSize &&
                   shoeSize.map((size) => (
                     <option key={size.id} className={cx('option')} value={size.id}>
-                      {size.size}
+                      {size.size} - {size.amount} Product
                     </option>
                   ))}
               </select>

@@ -7,7 +7,7 @@ import Image from '~/components/Image';
 import Button from '~/components/Button';
 import styles from './Order.module.scss';
 import axios from 'axios';
-import { faX } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faX } from '@fortawesome/free-solid-svg-icons';
 import GetToken from '~/Token/GetToken';
 
 const cx = classNames.bind(styles);
@@ -20,7 +20,7 @@ function Order({ data, icon }) {
   const handleChangeStatus = async (id) => {
     await axios
       .put(
-        `http://localhost:5000/api/order/changeStatus/${id}`,
+        `http://localhost:4000/api/order/updateStatus/${id}`,
         {},
         {
           headers: {
@@ -45,27 +45,34 @@ function Order({ data, icon }) {
 
   let iconComponent;
   let buttonComponent;
-  if (data.id_Status === 1) {
+  if (data.id_status === 1) {
     iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} spinPulse />;
     buttonComponent = (
-      <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
-        Confirm
-      </Button>
+      <div>
+        <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} outline>
+          Get Detail
+        </Button>
+        <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
+          Confirm
+        </Button>
+      </div>
     );
-  } else if (data.id_Status === 2) {
+  } else if (data.id_status === 2) {
     iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} bounce />;
     buttonComponent = (
       <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
         Confirm
       </Button>
     );
-  } else if (data.id_Status === 3) {
-    iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} beat />;
-  } else if (data.id_Status === 4) {
-    iconComponent = <FontAwesomeIcon className={cx('icon')} icon={faX} beat />;
-  } else {
-    iconComponent = null;
-    buttonComponent = null;
+  } else if (data.id_status === 3) {
+    iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} bounce />;
+    buttonComponent = (
+      <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
+        Confirm
+      </Button>
+    );
+  } else if (data.id_status === 4) {
+    iconComponent = <FontAwesomeIcon className={cx('icon')} icon={faCheckCircle} beat />;
   }
 
   function formatCurrency(number) {

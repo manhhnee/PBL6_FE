@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 import Menu from '~/pages/Admin/Menu';
@@ -27,11 +27,11 @@ function AdminWaiting() {
     <div className={cx('content')}>
       <Menu />
       <div className={cx('header-content')}>
-        <span className={cx('title-content')}>Order is preparing</span>
+        <span className={cx('title-content')}>Order is prepared</span>
       </div>
       <div className={cx('order-list')}>
         {orderList.map((order) => {
-          return <Order key={order.id} data={order} icon={faSpinner}></Order>;
+          return <Order key={order.id} data={order} icon={faBoxOpen}></Order>;
         })}
       </div>
     </div>

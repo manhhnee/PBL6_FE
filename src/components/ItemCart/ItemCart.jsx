@@ -16,7 +16,7 @@ function BookItemCart({ data, onSelect }) {
 
   const handleDeleteCart = async () => {
     await axios
-      .delete(`http://localhost:4000/api/cart/delete/${data.id}`, {
+      .delete(`http://localhost:4000/api/cart/delete/${data.cart_item_infor.id}`, {
         headers: { Authorization: `Bearer ${GetToken()}` },
       })
       .then((response) => {
@@ -24,7 +24,7 @@ function BookItemCart({ data, onSelect }) {
 
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 2000);
       })
       .catch((err) => {
         alert('Something went wrong', err);

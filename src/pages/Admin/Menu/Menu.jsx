@@ -67,7 +67,7 @@ function Menu() {
         to={config.routes.adminWaiting}
       >
         <span className={cx('number')}>{countPreparing}</span>
-        <span className={cx('state')}>Order is preparing</span>
+        <span className={cx('state')}>Order is prepared</span>
       </Button>
       <Button
         className={cx('btn-state2')}
@@ -75,7 +75,7 @@ function Menu() {
         to={config.routes.adminDelivering}
       >
         <span className={cx('number')}>{countDelivering}</span>
-        <span className={cx('state')}>Order is delivering</span>
+        <span className={cx('state')}>Order is delivered</span>
       </Button>
       <Button
         className={cx('btn-state3')}
