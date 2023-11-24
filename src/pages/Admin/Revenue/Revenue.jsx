@@ -15,6 +15,7 @@ function Revenue() {
   const [revenueYear, setRevenueYear] = useState();
   const [profitYear, setProfitYear] = useState();
   const [topCustomer, setTopCustomer] = useState([]);
+  const [topShoes, setTopShoes] = useState([]);
   const [potentialCustomer, setPotentialCustomer] = useState({});
 
   const [payload, setPayload] = useState({
@@ -64,23 +65,21 @@ function Revenue() {
       setTopCustomer(response.data.result.customers);
       setPotentialCustomer(response.data.result.customers[0]);
     };
+    const fetchAPIShoes = async (fromDate, toDate) => {
+      const response = await axios.get('http://localhost:4000/api/revenue/product', {
+        params: {
+          startDate: fromDate,
+          endDate: toDate,
+        },
+        headers: {
+          Authorization: `Bearer ${GetToken()}`,
+        },
+      });
+      setTopShoes(response.data.result.products);
+    };
 
-    // const fetchApiRevenueOfYear = async () => {
-    //   const response = await axios.get('http://localhost:5000/api/order/revenueOfYear', {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${GetToken()}`,
-    //     },
-    //   });
-    //   setNumberOfProduct(response.data.NumberOfProducts);
-    //   setRevenueYear(response.data.RevenueofYear);
-    //   setProfitYear(response.data.profitOfYear);
-    //   setTopProduct(response.data.TopProduct);
-    //   setPotentialCustomer(response.data.potentialCustomer);
-    // };
     fetchApiRevenue(payload.fromDate, payload.toDate);
-    // fetchApiRevenueOfYear();
-    // fetchApiRevenue(payload.fromDate, payload.toDate);
+    fetchAPIShoes(payload.fromDate, payload.toDate);
     fetchAPICustomers(payload.fromDate, payload.toDate);
   }, [payload.fromDate, payload.toDate]);
 
@@ -149,6 +148,21 @@ function Revenue() {
             <div className={cx('header')}>Potential customers</div>
             <span className={cx('name')}>{potentialCustomer.fullName}</span>
             <span className={cx('number')}>{formatCurrency(potentialCustomer.totalPrice)} total price</span>
+          </div>
+          <div className={cx('Top10')}>
+            <div className={cx('header')}>Top 20 best-selling shoes of the year</div>
+            <ul className={cx('products')}>
+              {topShoes &&
+                topShoes.map((product, index) => {
+                  const customerNumber = index + 1;
+                  return (
+                    <li key={product.id} className={cx('product-item')}>
+                      {customerNumber}. {product.name} with{' '}
+                      <span className={cx('high-light')}> {product.quantity} product</span>
+                    </li>
+                  );
+                })}
+            </ul>
           </div>
         </div>
       </div>
