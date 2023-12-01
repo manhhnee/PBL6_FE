@@ -11,6 +11,7 @@ function InputForm({ placeholder, leftIcon, type, value, setValue, name, classNa
     <div className={classes}>
       <div className={cx('icon')}>{leftIcon && <FontAwesomeIcon icon={leftIcon}></FontAwesomeIcon>}</div>
       <input
+        name={name}
         readOnly={readOnly}
         type={type}
         placeholder={placeholder}

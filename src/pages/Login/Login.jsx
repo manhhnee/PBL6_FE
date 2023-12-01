@@ -18,8 +18,13 @@ function Login() {
 
   const [isSignupMode, setIsSignupMode] = useState(location.state?.flag);
   const [payload, setPayload] = useState({
-    Email: '',
-    password: '',
+    EmailLogin: '',
+    PasswordLogin: '',
+  });
+
+  const [payload2, setPayload2] = useState({
+    EmailRegister: '',
+    PasswordRegister: '',
     firstName: '',
     lastName: '',
     phoneNumber: '',
@@ -80,8 +85,8 @@ function Login() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: payload.Email.trim(),
-        password: payload.password.trim(),
+        email: payload.EmailLogin.trim(),
+        password: payload.PasswordLogin.trim(),
       }),
     });
 
@@ -109,12 +114,12 @@ function Login() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: payload.Email.trim(),
-        password: payload.password.trim(),
-        firstname: payload.firstName.trim(),
-        lastname: payload.lastName.trim(),
-        phoneNumber: payload.phoneNumber.trim(),
-        confirm_password: payload.confirm_password.trim(),
+        email: payload2.EmailRegister.trim(),
+        password: payload2.PasswordRegister.trim(),
+        firstname: payload2.firstName.trim(),
+        lastname: payload2.lastName.trim(),
+        phoneNumber: payload2.phoneNumber.trim(),
+        confirm_password: payload2.confirm_password.trim(),
       }),
     });
     const data = await response.json();
@@ -124,7 +129,7 @@ function Login() {
         setIsSignupMode(false);
       }, 2000);
     } else {
-      toast.error(data.message);
+      toast.error('Please Register again!');
     }
   };
 
@@ -152,21 +157,21 @@ function Login() {
                 placeholder="Email"
                 leftIcon={faUser}
                 type="text"
-                value={payload.Email}
+                value={payload.EmailLogin}
                 setValue={setPayload}
-                name={'Email'}
+                name={'EmailLogin'}
               />
 
               <InputForm
                 placeholder="Password"
                 leftIcon={faLock}
                 type="password"
-                value={payload.password}
+                value={payload.PasswordLogin}
                 setValue={setPayload}
-                name={'password'}
+                name={'PasswordLogin'}
               />
 
-              <Button signin_signup className={cx('btn')} onClick={handleLoginSubmit}>
+              <Button signin_signup className={cx('btn')} onClick={handleLoginSubmit} id="LoginBtn">
                 Login
               </Button>
             </div>
@@ -176,8 +181,8 @@ function Login() {
                 placeholder="FirstName"
                 leftIcon={faSignature}
                 type="text"
-                value={payload.firstName}
-                setValue={setPayload}
+                value={payload2.firstName}
+                setValue={setPayload2}
                 name={'firstName'}
               />
 
@@ -185,8 +190,8 @@ function Login() {
                 placeholder="LastName"
                 leftIcon={faSignature}
                 type="text"
-                value={payload.lastName}
-                setValue={setPayload}
+                value={payload2.lastName}
+                setValue={setPayload2}
                 name={'lastName'}
               />
 
@@ -194,8 +199,8 @@ function Login() {
                 placeholder="Phone Number"
                 leftIcon={faPhone}
                 type="text"
-                value={payload.phoneNumber}
-                setValue={setPayload}
+                value={payload2.phoneNumber}
+                setValue={setPayload2}
                 name={'phoneNumber'}
               />
 
@@ -205,29 +210,29 @@ function Login() {
                 placeholder="Email"
                 leftIcon={faUser}
                 type="text"
-                value={payload.Email}
-                setValue={setPayload}
-                name={'Email'}
+                value={payload2.EmailRegister}
+                setValue={setPayload2}
+                name={'EmailRegister'}
               />
 
               <InputForm
                 placeholder="Password"
                 leftIcon={faLock}
                 type="text"
-                value={payload.password}
-                setValue={setPayload}
-                name={'password'}
+                value={payload2.PasswordRegister}
+                setValue={setPayload2}
+                name={'PasswordRegister'}
               />
 
               <InputForm
                 placeholder="Confirm Password"
                 leftIcon={faLock}
                 type="text"
-                value={payload.confirm_password}
-                setValue={setPayload}
+                value={payload2.confirm_password}
+                setValue={setPayload2}
                 name={'confirm_password'}
               />
-              <Button signin_signup className={cx('btn')} onClick={HandleSubmitSignUp}>
+              <Button signin_signup className={cx('btn')} onClick={HandleSubmitSignUp} id="RegisterBtn">
                 Register
               </Button>
             </div>
@@ -238,7 +243,7 @@ function Login() {
             <div className={cx('content')}>
               <h3>PBL 6: Project CN 1 </h3>
               <p>Member: Nguyễn Đức Mạnh, Trần Anh Hào, Hồ Thanh Hưng</p>
-              <button className={cx('btn', 'transparent')} onClick={handleSignupClick}>
+              <button className={cx('btn', 'transparent')} onClick={handleSignupClick} id="Register">
                 Register
               </button>
             </div>
@@ -248,7 +253,7 @@ function Login() {
             <div className={cx('content')}>
               <h3>PBL 6: Project CN 1 </h3>
               <p>Member: Nguyễn Đức Mạnh, Trần Anh Hào, Hồ Thanh Hưng</p>
-              <button className={cx('btn', 'transparent')} onClick={handleSigninClick}>
+              <button className={cx('btn', 'transparent')} onClick={handleSigninClick} id="Login">
                 Login
               </button>
             </div>
