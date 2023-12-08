@@ -7,10 +7,12 @@ import axios from 'axios';
 import Button from '~/components/Button';
 import config from '~/config';
 import styles from './Menu.module.scss';
+import { faFaceAngry } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function Menu() {
+  const [countPending, setCountPending] = useState();
   const [countPreparing, setCountPreparing] = useState();
   const [countDelivering, setCountDelivering] = useState();
   const [countSuccess, setCountSuccess] = useState();
@@ -31,6 +33,14 @@ function Menu() {
     return '';
   }
   useEffect(() => {
+    const getApiOrderPending = async () => {
+      const response = await axios.get('http://localhost:4000/api/order/All/status/1', {
+        headers: {
+          Authorization: `Bearer ${getJwtFromCookie()}`,
+        },
+      });
+      setCountPending(response.data.result.length);
+    };
     const getApiOrderPreparing = async () => {
       const response = await axios.get('http://localhost:4000/api/order/All/status/2', {
         headers: {
@@ -55,37 +65,42 @@ function Menu() {
       });
       setCountSuccess(response.data.result.length);
     };
+    getApiOrderPending();
     getApiOrderPreparing();
     getApiOrderDelivering();
     getApiOrderSuccess();
   }, []);
   return (
-    <div className={cx('states')}>
-      <Button
-        className={cx('btn-state1')}
-        leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faRectangleList} />}
-        to={config.routes.adminWaiting}
-      >
-        <span className={cx('number')}>{countPreparing}</span>
-        <span className={cx('state')}>Order is prepared</span>
-      </Button>
-      <Button
-        className={cx('btn-state2')}
-        leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faRectangleList} />}
-        to={config.routes.adminDelivering}
-      >
-        <span className={cx('number')}>{countDelivering}</span>
-        <span className={cx('state')}>Order is delivered</span>
-      </Button>
-      <Button
-        className={cx('btn-state3')}
-        leftIcon={<FontAwesomeIcon className={cx('icon')} icon={faRectangleList} />}
-        to={config.routes.adminSuccess}
-      >
-        <span className={cx('number')}>{countSuccess}</span>
-        <span className={cx('state')}>Order delivered successfully</span>
-      </Button>
-    </div>
+    <ul className={cx('box-info')}>
+      <li onClick={() => window.location.replace(config.routes.adminPending)}>
+        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <span className={cx('text')}>
+          <h3>{countPending}</h3>
+          <p>Order is pending</p>
+        </span>
+      </li>
+      <li onClick={() => window.location.replace(config.routes.adminWaiting)}>
+        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <span className={cx('text')}>
+          <h3>{countPreparing}</h3>
+          <p>Order is prepared</p>
+        </span>
+      </li>
+      <li onClick={() => window.location.replace(config.routes.adminDelivering)}>
+        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <span className={cx('text')}>
+          <h3>{countDelivering}</h3>
+          <p>Order is delivered</p>
+        </span>
+      </li>
+      <li onClick={() => window.location.replace(config.routes.adminSuccess)}>
+        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <span className={cx('text')}>
+          <h3>{countSuccess}</h3>
+          <p>Order delivered successfully</p>
+        </span>
+      </li>
+    </ul>
   );
 }
 

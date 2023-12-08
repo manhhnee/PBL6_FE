@@ -5,9 +5,10 @@
 
 .container {
   padding: 12px;
-  flex: 1 1;
-  padding-left: 12px;
-  padding-top: 12px;
+  position: relative;
+  width: calc(100% - 280px);
+  left: 280px;
+  transition: 0.3s ease;
   background-color: #f5f5fb;
   max-height: 100vh;
   overflow-y: auto;

@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 
 import styles from './Search.module.scss';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -92,7 +94,10 @@ function Search() {
             onChange={handleChange}
             onFocus={() => setShowResult(true)}
           />
-
+          <label htmlFor="file-upload" className={cx('upload-btn')}>
+            <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon>
+            <input id="file-upload" type="file"></input>
+          </label>
           <button className={cx('search-btn')} onClick={handleSearch} onMouseDown={(e) => e.preventDefault()}>
             <Icon icon="iconamoon:search-bold" />
           </button>

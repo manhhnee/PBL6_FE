@@ -104,7 +104,11 @@ function Login() {
         }
       }, 2000);
     } else {
-      toast.error('Please login again!');
+      if (data.error.email) {
+        toast.error(data.error.email.message);
+      } else if (data.error.password) {
+        toast.error(data.error.password.message);
+      }
     }
   };
   const HandleSubmitSignUp = async () => {
@@ -123,13 +127,26 @@ function Login() {
       }),
     });
     const data = await response.json();
+    console.log(data);
     if (data.success === true) {
       toast.success('Register successful!');
       setTimeout(() => {
         setIsSignupMode(false);
-      }, 2000);
+      }, 10000);
     } else {
-      toast.error('Please Register again!');
+      if (data.error.email) {
+        toast.error(data.error.email.message);
+      } else if (data.error.password) {
+        toast.error(data.error.password.message);
+      } else if (data.error.firstname) {
+        toast.error(data.error.firstname.message);
+      } else if (data.error.lastname) {
+        toast.error(data.error.lastname.message);
+      } else if (data.error.confirm_password) {
+        toast.error(data.error.confirm_password.message);
+      } else if (data.error.phoneNumber) {
+        toast.error(data.error.phoneNumber.message);
+      }
     }
   };
 

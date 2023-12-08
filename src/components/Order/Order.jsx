@@ -22,30 +22,24 @@ function Order({ data, icon }) {
     opacity: isModalOpen1 ? 1 : 0,
   });
 
-  const openModal1 = () => {
+  if (!data) {
+    return null;
+  }
+
+  const openModal1 = async (id) => {
     setIsModalOpen1(true);
+    const response = await axios.get(`http://localhost:4000/api/order/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${GetToken()}`,
+      },
+    });
+    setOrderList(response.data.result.Order_items);
   };
 
   const closeModal1 = () => {
     setIsModalOpen1(false);
   };
-
-  useEffect(() => {
-    const fetchApiDetailOrder = async () => {
-      const response = await axios.get(`http://localhost:4000/api/order/13`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${GetToken()}`,
-        },
-      });
-      setOrderList(response.data.result.Order_items);
-    };
-    fetchApiDetailOrder();
-  }, [data]);
-
-  if (!data) {
-    return null;
-  }
 
   const handleChangeStatus = async (id) => {
     await axios
@@ -81,7 +75,7 @@ function Order({ data, icon }) {
       <div>
         <Button
           onClick={() => {
-            openModal1();
+            openModal1(data.id);
           }}
           className={cx('btn')}
           outline

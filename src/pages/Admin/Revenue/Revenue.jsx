@@ -11,12 +11,11 @@ import GetToken from '~/Token/GetToken';
 const cx = classNames.bind(styles);
 
 function Revenue() {
-  const [numOfProduct, setNumberOfProduct] = useState();
-  const [revenueYear, setRevenueYear] = useState();
-  const [profitYear, setProfitYear] = useState();
   const [topCustomer, setTopCustomer] = useState([]);
   const [topShoes, setTopShoes] = useState([]);
   const [potentialCustomer, setPotentialCustomer] = useState({});
+  const [totalRevenue, setTotalRevenue] = useState();
+  const [totalProfit, setTotalProfit] = useState();
 
   const [payload, setPayload] = useState({
     fromDate: '2023-01-01',
@@ -45,10 +44,13 @@ function Revenue() {
         },
       });
       const formattedData = response.data.result.orders.map((item) => ({
-        revenue_date: moment(item.revenue_date).format('DD-MM-YYYY'),
+        revenue_date: moment(item.createAt).format('DD-MM-YYYY'),
         revenue: item.totalPrice,
         profit: item.profit,
       }));
+
+      setTotalRevenue(response.data.result.totalRevenue);
+      setTotalProfit(response.data.result.profitRevenue);
       setData(formattedData);
     };
 
@@ -114,7 +116,6 @@ function Revenue() {
           <BarChart width={1220} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="revenue_date" />
-            <YAxis />
             <Tooltip />
             <Legend
               iconType="circle" // Kiểu biểu tượng chú thích (circle, plainline, square, rectangle, diamond, triangle, wye)
@@ -136,18 +137,21 @@ function Revenue() {
                 topCustomer.map((product, index) => {
                   const customerNumber = index + 1;
                   return (
-                    <li key={product.id} className={cx('product-item')}>
-                      {customerNumber}. {product.fullName} with{' '}
-                      <span className={cx('high-light')}> {formatCurrency(product.totalPrice)} total price</span>
-                    </li>
+                    product && (
+                      <li key={product.id} className={cx('product-item')}>
+                        {customerNumber}. {product.fullName} with{' '}
+                        <span className={cx('high-light')}> {formatCurrency(product.totalPrice)} total price</span>
+                      </li>
+                    )
                   );
                 })}
             </ul>
           </div>
           <div className={cx('BestCustomer')}>
-            <div className={cx('header')}>Potential customers</div>
-            <span className={cx('name')}>{potentialCustomer.fullName}</span>
-            <span className={cx('number')}>{formatCurrency(potentialCustomer.totalPrice)} total price</span>
+            <div className={cx('header')}>TotalRevenue</div>
+            <span className={cx('number')}>{totalRevenue && formatCurrency(totalRevenue)} total price</span>
+            <div className={cx('header')}>TotalProfit</div>
+            <span className={cx('number')}>{totalProfit && formatCurrency(totalProfit)} total price</span>
           </div>
           <div className={cx('Top10')}>
             <div className={cx('header')}>Top 20 best-selling shoes of the year</div>

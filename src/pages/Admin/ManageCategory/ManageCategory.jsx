@@ -13,6 +13,7 @@ import Popup from '~/components/Popup';
 import styles from './ManageCategory.module.scss';
 import axios from 'axios';
 import GetToken from '~/Token/GetToken';
+import DataTable from 'react-data-table-component';
 
 const cx = classNames.bind(styles);
 
@@ -27,19 +28,9 @@ function ManageCategory() {
     name: '',
     image: '',
   });
-
-  useEffect(() => {
-    const fetchApiCategory = async () => {
-      const response = await axios.get(`http://localhost:4000/api/category`, {
-        headers: {
-          Authorization: `Bearer ${GetToken()}`,
-        },
-      });
-      console.log(response.data.categories);
-      setListCategory(response.data.categories);
-    };
-    fetchApiCategory();
-  }, []);
+  const [search, setSearch] = useState('');
+  const [shoes, setShoes] = useState([]);
+  const [filteredShoes, setFilteredShoes] = useState([]);
 
   const handleAddCategory = async (name, image) => {
     await axios
@@ -117,6 +108,28 @@ function ManageCategory() {
     setIsModalOpen2(false);
   };
 
+  const columns = [
+    {
+      name: 'Shoes name',
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: 'Brand',
+      selector: (row) => row.Brand.name,
+    },
+    {
+      name: 'Selling price',
+      selector: (row) => row.price,
+      sortable: true,
+    },
+    {
+      name: 'Import price',
+      selector: (row) => row.import_price,
+      sortable: true,
+    },
+  ];
+
   const handleImgChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -127,6 +140,34 @@ function ManageCategory() {
     reader.readAsDataURL(file);
     setAvatar(e.target.files[0]);
   };
+
+  useEffect(() => {
+    const fetchApiCategory = async () => {
+      const response = await axios.get(`http://localhost:4000/api/category`, {
+        headers: {
+          Authorization: `Bearer ${GetToken()}`,
+        },
+      });
+      setListCategory(response.data.categories);
+    };
+
+    const fetchApiShoes = async () => {
+      const response = await axios.get(`http://localhost:4000/api/shoes?category=${selectedCategoryId}`, {
+        headers: {
+          Authorization: `Bearer ${GetToken()}`,
+        },
+      });
+      setShoes(response.data.result);
+      setFilteredShoes(response.data.result);
+    };
+
+    fetchApiCategory();
+    fetchApiShoes();
+    const result = shoes.filter((shoe) => {
+      return shoe.name.toLowerCase().match(search.toLowerCase());
+    });
+    setFilteredShoes(result);
+  }, [search, shoes, selectedCategoryId]);
 
   return (
     <div className={cx('wrapper')}>
@@ -198,37 +239,31 @@ function ManageCategory() {
           })}
       </div>
 
-      <Popup isOpen={isModalOpen1} onRequestClose={() => closeModal1()} width={'450px'} height={'450px'}>
+      <Popup isOpen={isModalOpen1} onRequestClose={() => closeModal1()} width={'900px'} height={'500px'}>
         <animated.div style={modalAnimation1}>
-          <h2>Category information</h2>
-          <div className={cx('input-field')}>
-            <div className={cx('header')}>Category name</div>
-            <InputForm
-              placeholder={listCategory.Name}
-              type="text"
-              value={payload.name}
-              setValue={setPayload}
-              name={'name'}
-              className={cx('input')}
-              leftIcon={faBookmark}
-            />
-          </div>
-          <div className={cx('header')}>Image of category</div>
-          <div className={cx('input-field')}>
-            <div className={cx('upload-field')}>
-              {avatar && <img src={image} className={cx('image')} alt="Avatar" />}
-              <label htmlFor="file-upload" className={cx('upload-btn')}>
-                <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon>
-                <input id="file-upload" type="file" onChange={handleImgChange}></input>
-              </label>
-            </div>
-          </div>
-
-          <div className={cx('options')}>
-            <Button onClick={() => handleDeleteCategory()} primary>
-              Delete category
-            </Button>
-          </div>
+          <DataTable
+            title="Shoes list"
+            columns={columns}
+            data={filteredShoes}
+            fixedHeader
+            fixedHeaderScrollHeight="500px"
+            pointerOnHover
+            highlightOnHover
+            pagination
+            className={cx('fixed-header')}
+            subHeader
+            subHeaderComponent={
+              <div className={cx('wrapper-header')} style={{ zIndex: 0 }}>
+                <input
+                  type="text"
+                  placeholder="Search for shoes here"
+                  className={cx('search')}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                ></input>
+              </div>
+            }
+          />
         </animated.div>
       </Popup>
     </div>

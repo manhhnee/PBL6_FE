@@ -5,26 +5,76 @@
 
 //sidebar
 
-.btn {
-  position: relative;
-  background-color: #fafafd;
-  width: 100%;
-  height: 56px;
-  justify-content: left;
-  color: var(--black);
-  font-size: 1.6rem;
-  margin-top: 15px;
-
-  &:hover {
-    background-color: var(--hover-btn);
-  }
-
-  &:first-child {
-    margin-top: 60px;
-  }
+.sidebar {
+  width: 280px;
+  background-color: var(--white);
 }
 
-.btn.active {
-  color: var(--blue);
-  border-right: 3px solid var(--blue);
+.bx {
+  min-width: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.side-menu {
+  width: 100%;
+  margin-top: 48px;
+
+  li {
+    height: 48px;
+    background: transparent;
+    margin-left: 6px;
+    border-radius: 48px 0 0 48px;
+    padding: 4px;
+
+    a {
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      border-radius: 48px;
+      font-size: 16px;
+      color: var(--black);
+      white-space: nowrap;
+      overflow-x: hidden;
+    }
+  }
+
+  .active {
+    background: var(--grey);
+    position: relative;
+
+    a {
+      color: var(--blue);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      top: -40px;
+      right: 0;
+      box-shadow: 20px 20px 0 var(--grey);
+      z-index: -1;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      bottom: -40px;
+      right: 0;
+      box-shadow: 20px -20px 0 var(--grey);
+      z-index: -1;
+    }
+  }
+
+  .logout {
+    color: var(--red);
+  }
 }

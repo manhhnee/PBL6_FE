@@ -50,4 +50,8 @@
   border-radius: 12px;
   box-shadow: 2px 2px 2px lavender;
   height: 90px;
+
+  span:nth-child(2) {
+    width: 300px;
+  }
 }
