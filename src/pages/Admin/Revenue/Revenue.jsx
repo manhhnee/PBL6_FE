@@ -43,9 +43,9 @@ function Revenue() {
           Authorization: `Bearer ${GetToken()}`,
         },
       });
-      const formattedData = response.data.result.orders.map((item) => ({
-        revenue_date: moment(item.createAt).format('DD-MM-YYYY'),
-        revenue: item.totalPrice,
+      const formattedData = response.data.result.resultByDay.map((item) => ({
+        revenue_date: moment(item.date).format('DD-MM-YYYY'),
+        revenue: item.totalRevenue,
         profit: item.profit,
       }));
 
