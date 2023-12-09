@@ -81,7 +81,7 @@ function Cart() {
 
         await axios
           .post(
-            'http://localhost:4000/api/order/create',
+            'http://54.164.6.175:3000/api/order/create',
             {
               cartItems: orderItemsPayload,
               address: address,
@@ -107,7 +107,7 @@ function Cart() {
 
   useEffect(() => {
     const fetchApiCarts = async () => {
-      const response = await axios.get(`http://localhost:4000/api/cart/details`, {
+      const response = await axios.get(`http://54.164.6.175:3000/api/cart/details`, {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },

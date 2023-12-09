@@ -28,7 +28,7 @@ function Header() {
   );
   const getAPIProfiler = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/user/profile/me', {
+      const response = await axios.get('http://54.164.6.175:3000/api/user/profile/me', {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },

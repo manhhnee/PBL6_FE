@@ -46,7 +46,7 @@ function BookItemHistory() {
   useEffect(() => {
     const getApiHistoryDetail = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/order/${id}`, {
+        const response = await axios.get(`http://54.164.6.175:3000/api/order/${id}`, {
           headers: {
             Authorization: `Bearer ${GetToken()}`,
           },
@@ -65,7 +65,7 @@ function BookItemHistory() {
   const handleRating = async (idShoe, star, comment) => {
     await axios
       .post(
-        'http://localhost:4000/api/rating/add',
+        'http://54.164.6.175:3000/api/rating/add',
         {
           id_shoes: idShoe,
           comment: comment,

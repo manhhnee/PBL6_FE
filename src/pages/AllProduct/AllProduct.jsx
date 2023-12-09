@@ -62,19 +62,19 @@ function AllBook() {
   useEffect(() => {
     const fetchApiShoes = async () => {
       const response = await axios.get(
-        `http://localhost:4000/api/shoes?limit=100&category=${idCategory}&brand=${idBrand}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
+        `http://54.164.6.175:3000/api/shoes?limit=100&category=${idCategory}&brand=${idBrand}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
       );
       setShoes(response.data.result);
       setTotalPage(response.data.totalPages);
     };
 
     const fetchApiCategories = async () => {
-      const response = await axios.get('http://localhost:4000/api/category/');
+      const response = await axios.get('http://54.164.6.175:3000/api/category/');
       const categoriesData = await response.data.categories;
       setCategories(categoriesData);
     };
     const fetchApiBrands = async () => {
-      const response = await axios.get('http://localhost:4000/api/brand/');
+      const response = await axios.get('http://54.164.6.175:3000/api/brand/');
       const brandsData = await response.data.brands;
       setBrands(brandsData);
     };
