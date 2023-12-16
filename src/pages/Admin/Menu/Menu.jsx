@@ -34,7 +34,7 @@ function Menu() {
   }
   useEffect(() => {
     const getApiOrderPending = async () => {
-      const response = await axios.get('http://54.164.6.175:3000/api/order/All/status/1', {
+      const response = await axios.get('http://54.164.6.175:4000/api/order/All/status/1', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -42,7 +42,7 @@ function Menu() {
       setCountPending(response.data.result.length);
     };
     const getApiOrderPreparing = async () => {
-      const response = await axios.get('http://54.164.6.175:3000/api/order/All/status/2', {
+      const response = await axios.get('http://54.164.6.175:4000/api/order/All/status/2', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -50,7 +50,7 @@ function Menu() {
       setCountPreparing(response.data.result.length);
     };
     const getApiOrderDelivering = async () => {
-      const response = await axios.get('http://54.164.6.175:3000/api/order/All/status/3', {
+      const response = await axios.get('http://54.164.6.175:4000/api/order/All/status/3', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -58,7 +58,7 @@ function Menu() {
       setCountDelivering(response.data.result.length);
     };
     const getApiOrderSuccess = async () => {
-      const response = await axios.get('http://54.164.6.175:3000/api/order/All/status/4', {
+      const response = await axios.get('http://54.164.6.175:4000/api/order/All/status/4', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },

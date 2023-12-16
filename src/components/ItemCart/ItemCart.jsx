@@ -16,7 +16,7 @@ function BookItemCart({ data, onSelect }) {
 
   const handleDeleteCart = async () => {
     await axios
-      .delete(`http://54.164.6.175:3000/api/cart/delete/${data.cart_item_infor.id}`, {
+      .delete(`http://54.164.6.175:4000/api/cart/delete/${data.cart_item_infor.id}`, {
         headers: { Authorization: `Bearer ${GetToken()}` },
       })
       .then((response) => {

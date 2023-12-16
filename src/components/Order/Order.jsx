@@ -28,7 +28,7 @@ function Order({ data, icon }) {
 
   const openModal1 = async (id) => {
     setIsModalOpen1(true);
-    const response = await axios.get(`http://54.164.6.175:3000/api/order/${id}`, {
+    const response = await axios.get(`http://54.164.6.175:4000/api/order/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${GetToken()}`,
@@ -44,7 +44,7 @@ function Order({ data, icon }) {
   const handleChangeStatus = async (id) => {
     await axios
       .put(
-        `http://54.164.6.175:3000/api/order/updateStatus/${id}`,
+        `http://54.164.6.175:4000/api/order/updateStatus/${id}`,
         {},
         {
           headers: {
@@ -90,9 +90,20 @@ function Order({ data, icon }) {
   } else if (data.id_status === 2) {
     iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} bounce />;
     buttonComponent = (
-      <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
-        Confirm
-      </Button>
+      <div>
+        <Button
+          onClick={() => {
+            openModal1(data.id);
+          }}
+          className={cx('btn')}
+          outline
+        >
+          Get Detail
+        </Button>
+        <Button onClick={() => handleChangeStatus(data.id)} className={cx('btn')} blue>
+          Confirm
+        </Button>
+      </div>
     );
   } else if (data.id_status === 3) {
     iconComponent = <FontAwesomeIcon className={cx('icon')} icon={icon} bounce />;

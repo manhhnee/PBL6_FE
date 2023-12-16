@@ -24,7 +24,7 @@ function Search() {
       return;
     }
     const fetchApi = async () => {
-      const response = await axios.get(`http://54.164.6.175:3000/api/shoes?search=${searchValue}&limit=5`);
+      const response = await axios.get(`http://54.164.6.175:4000/api/shoes?search=${searchValue}&limit=5`);
       setSearchResult(response.data.result);
     };
 

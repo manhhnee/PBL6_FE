@@ -79,7 +79,7 @@ function Login() {
   //   };
 
   const handleLoginSubmit = async () => {
-    const response = await fetch('http://54.164.6.175:3000/api/user/login/', {
+    const response = await fetch('http://54.164.6.175:4000/api/user/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ function Login() {
     }
   };
   const HandleSubmitSignUp = async () => {
-    const response = await fetch('http://54.164.6.175:3000/api/user/register', {
+    const response = await fetch('http://54.164.6.175:4000/api/user/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

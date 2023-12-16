@@ -20,7 +20,7 @@ function History() {
 
   useEffect(() => {
     const getApiHistoryOrder = async () => {
-      const response = await axios.get('http://54.164.6.175:3000/api/order/history', {
+      const response = await axios.get('http://54.164.6.175:4000/api/order/history', {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },
@@ -35,7 +35,7 @@ function History() {
   const handleCancelOrder = async (id) => {
     await axios
       .put(
-        `http://54.164.6.175:3000/api/order/cancel/${id}`,
+        `http://54.164.6.175:4000/api/order/cancel/${id}`,
         {},
         {
           headers: {

@@ -38,7 +38,7 @@ function Information() {
   useEffect(() => {
     const fetchAPIProfile = async () => {
       try {
-        const response = await axios.get('http://54.164.6.175:3000/api/user/profile/me', {
+        const response = await axios.get('http://54.164.6.175:4000/api/user/profile/me', {
           headers: {
             Authorization: `Bearer ${GetToken()}`,
           },
@@ -69,7 +69,7 @@ function Information() {
     formData.append('firstname', payload1.firstName);
     formData.append('lastname', payload1.lastName);
     formData.append('phoneNumber', payload1.phoneNumber);
-    const response = await fetch('http://54.164.6.175:3000/api/user/updateProfile', {
+    const response = await fetch('http://54.164.6.175:4000/api/user/updateProfile', {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${GetToken()}`, // trả token về server để xử lí
@@ -92,7 +92,7 @@ function Information() {
   const handleUpdateAva = async () => {
     const formData = new FormData();
     formData.append('image', avatar);
-    const response = await fetch('http://54.164.6.175:3000/api/user/update-avatar', {
+    const response = await fetch('http://54.164.6.175:4000/api/user/update-avatar', {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${GetToken()}`, // trả token về server để xử lí
@@ -115,7 +115,7 @@ function Information() {
   const handleChangePassword = async (oldPass, newPass, againPass) => {
     await axios
       .put(
-        'http://54.164.6.175:3000/api/user/change-password',
+        'http://54.164.6.175:4000/api/user/change-password',
         {
           Password: oldPass,
           NewPassword: newPass,
