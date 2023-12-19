@@ -38,7 +38,7 @@ function Information() {
   useEffect(() => {
     const fetchAPIProfile = async () => {
       try {
-        const response = await axios.get('http://54.164.6.175:4000/api/user/profile/me', {
+        const response = await axios.get('http://localhost:4000/api/user/profile/me', {
           headers: {
             Authorization: `Bearer ${GetToken()}`,
           },
@@ -65,34 +65,41 @@ function Information() {
   }, []);
 
   const handleUpdateInfor = async () => {
-    const formData = new FormData();
-    formData.append('firstname', payload1.firstName);
-    formData.append('lastname', payload1.lastName);
-    formData.append('phoneNumber', payload1.phoneNumber);
-    const response = await fetch('http://54.164.6.175:4000/api/user/updateProfile', {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${GetToken()}`, // trả token về server để xử lí
-      },
-      body: formData,
-    });
-
-    const data = await response.json();
-    if (data.success === true) {
-      toast.success(data.message);
-      setInfor({ ...infor, payload1 });
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    } else {
-      toast.error(data.message);
+    try {
+      await axios
+        .put(
+          `http://localhost:4000/api/user/updateProfile`,
+          {
+            lastname: payload1.lastName,
+            firstname: payload1.firstName,
+            phoneNumber: payload1.phoneNumber,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${GetToken()}`,
+            },
+          },
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setInfor({ ...infor, payload1 });
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
   const handleUpdateAva = async () => {
     const formData = new FormData();
     formData.append('image', avatar);
-    const response = await fetch('http://54.164.6.175:4000/api/user/update-avatar', {
+    const response = await fetch('http://localhost:4000/api/user/update-avatar', {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${GetToken()}`, // trả token về server để xử lí
@@ -115,7 +122,7 @@ function Information() {
   const handleChangePassword = async (oldPass, newPass, againPass) => {
     await axios
       .put(
-        'http://54.164.6.175:4000/api/user/change-password',
+        'http://localhost:4000/api/user/change-password',
         {
           Password: oldPass,
           NewPassword: newPass,

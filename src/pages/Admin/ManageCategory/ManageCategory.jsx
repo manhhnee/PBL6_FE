@@ -35,7 +35,7 @@ function ManageCategory() {
   const handleAddCategory = async (name, image) => {
     await axios
       .post(
-        'http://54.164.6.175:4000/api/category/add',
+        'http://localhost:4000/api/category/add',
         {
           name: name,
           image: image,
@@ -60,7 +60,7 @@ function ManageCategory() {
 
   const handleDeleteCategory = async () => {
     await axios
-      .delete(`http://54.164.6.175:4000/api/category/delele/${selectedCategoryId}`, {
+      .delete(`http://localhost:4000/api/category/delele/${selectedCategoryId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${GetToken()}`,
@@ -143,7 +143,7 @@ function ManageCategory() {
 
   useEffect(() => {
     const fetchApiCategory = async () => {
-      const response = await axios.get(`http://54.164.6.175:4000/api/category`, {
+      const response = await axios.get(`http://localhost:4000/api/category`, {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },
@@ -152,7 +152,7 @@ function ManageCategory() {
     };
 
     const fetchApiShoes = async () => {
-      const response = await axios.get(`http://54.164.6.175:4000/api/shoes?category=${selectedCategoryId}`, {
+      const response = await axios.get(`http://localhost:4000/api/shoes?category=${selectedCategoryId}`, {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },

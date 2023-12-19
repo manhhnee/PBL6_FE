@@ -15,7 +15,7 @@ function AdminSuccess() {
 
   useEffect(() => {
     const getApiOrderPending = async () => {
-      const response = await axios.get('http://54.164.6.175:4000/api/order/All/status/4', {
+      const response = await axios.get('http://localhost:4000/api/order/All/status/4', {
         headers: { Authorization: `Bearer ${GetToken()}` },
       });
       setOrderList(response.data.result);

@@ -16,7 +16,7 @@ function Home() {
   useEffect(() => {
     const fetchAPICategories = async () => {
       try {
-        const response = await axios.get('http://54.164.6.175:4000/api/category/');
+        const response = await axios.get('http://localhost:4000/api/category/');
         setCategories(response.data.categories);
       } catch (error) {
         console.log(error);
@@ -24,7 +24,7 @@ function Home() {
     };
     const fetchAPIShoes = async () => {
       try {
-        const response = await axios.get('http://54.164.6.175:4000/api/shoes?limit=10');
+        const response = await axios.get('http://localhost:4000/api/shoes?limit=10');
         setShoes(response.data.result);
       } catch (error) {
         console.log(error);

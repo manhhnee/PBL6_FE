@@ -70,7 +70,7 @@ function DetailItem() {
     console.log(count, idSize);
     await axios
       .post(
-        'http://54.164.6.175:4000/api/cart/add',
+        'http://localhost:4000/api/cart/add',
         {
           quantity: count,
           id_size_item: idSize,
@@ -95,7 +95,7 @@ function DetailItem() {
     } else {
       try {
         const response = await axios.post(
-          'http://54.164.6.175:4000/api/order/createOneItem',
+          'http://localhost:4000/api/order/createOneItem',
           {
             Item: {
               id_size_item: idSize,
@@ -125,7 +125,7 @@ function DetailItem() {
 
   useEffect(() => {
     const getAPIDetailItem = async () => {
-      const response = await axios.get(`http://54.164.6.175:4000/api/shoes/${id}`);
+      const response = await axios.get(`http://localhost:4000/api/shoes/${id}`);
       setShoe(response.data.result);
       setShoeSize(response.data.result.Size_items);
       setRatings(response.data.result.rating);

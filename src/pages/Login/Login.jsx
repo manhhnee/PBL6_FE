@@ -79,75 +79,85 @@ function Login() {
   //   };
 
   const handleLoginSubmit = async () => {
-    const response = await fetch('http://54.164.6.175:4000/api/user/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: payload.EmailLogin.trim(),
-        password: payload.PasswordLogin.trim(),
-      }),
-    });
+    try {
+      const response = await fetch('http://localhost:4000/api/user/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: payload.EmailLogin.trim(),
+          password: payload.PasswordLogin.trim(),
+        }),
+      });
 
-    const data = await response.json();
-    console.log(data);
-    if (data.success === true) {
-      toast.success('Login successful');
-      localStorage.setItem('Role', data.role);
-      document.cookie = `token=${data.accessToken}`;
-      setTimeout(() => {
-        if (data.role === 'admin') {
-          window.location.replace(config.routes.adminPending);
+      const data = await response.json();
+      console.log(data);
+      if (data.success === true) {
+        toast.success('Login successful');
+        localStorage.setItem('Role', data.role);
+        document.cookie = `token=${data.accessToken}`;
+        setTimeout(() => {
+          if (data.role === 'admin') {
+            window.location.replace(config.routes.adminPending);
+          } else {
+            window.location.replace(config.routes.home);
+          }
+        }, 2000);
+      } else {
+        if (data.errors && data.errors.email) {
+          toast.error(data.errors.email.message);
+        } else if (data.errors && data.errors.password) {
+          toast.error(data.error.password.message);
         } else {
-          window.location.replace(config.routes.home);
+          toast.error(data.message);
         }
-      }, 2000);
-    } else {
-      if (data.error.email) {
-        toast.error(data.error.email.message);
-      } else if (data.error.password) {
-        toast.error(data.error.password.message);
       }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
   const HandleSubmitSignUp = async () => {
-    const response = await fetch('http://54.164.6.175:4000/api/user/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: payload2.EmailRegister.trim(),
-        password: payload2.PasswordRegister.trim(),
-        firstname: payload2.firstName.trim(),
-        lastname: payload2.lastName.trim(),
-        phoneNumber: payload2.phoneNumber.trim(),
-        confirm_password: payload2.confirm_password.trim(),
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
-    if (data.success === true) {
-      toast.success('Register successful!');
-      setTimeout(() => {
-        setIsSignupMode(false);
-      }, 10000);
-    } else {
-      if (data.error.email) {
-        toast.error(data.error.email.message);
-      } else if (data.error.password) {
-        toast.error(data.error.password.message);
-      } else if (data.error.firstname) {
-        toast.error(data.error.firstname.message);
-      } else if (data.error.lastname) {
-        toast.error(data.error.lastname.message);
-      } else if (data.error.confirm_password) {
-        toast.error(data.error.confirm_password.message);
-      } else if (data.error.phoneNumber) {
-        toast.error(data.error.phoneNumber.message);
+    try {
+      const response = await fetch('http://localhost:4000/api/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: payload2.EmailRegister.trim(),
+          password: payload2.PasswordRegister.trim(),
+          firstname: payload2.firstName.trim(),
+          lastname: payload2.lastName.trim(),
+          phoneNumber: payload2.phoneNumber.trim(),
+          confirm_password: payload2.confirm_password.trim(),
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.success === true) {
+        toast.success('Register successful!');
+        setTimeout(() => {
+          setIsSignupMode(false);
+        }, 10000);
+      } else {
+        if (data.errors && data.errors.email) {
+          toast.error(data.errors.email.message);
+        } else if (data.errors && data.errors.password) {
+          toast.error(data.errors.password.message);
+        } else if (data.errors && data.errors.firstname) {
+          toast.error(data.errors.firstname.message);
+        } else if (data.errors && data.errors.lastname) {
+          toast.error(data.errors.lastname.message);
+        } else if (data.errors && data.errors.confirm_password) {
+          toast.error(data.errors.confirm_password.message);
+        } else if (data.errors && data.errors.phoneNumber) {
+          toast.error(data.errors.phoneNumber.message);
+        } else {
+          toast.error(data.message);
+        }
       }
-    }
+    } catch (error) {}
   };
 
   return (

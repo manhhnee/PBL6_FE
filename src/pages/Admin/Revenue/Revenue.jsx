@@ -34,7 +34,7 @@ function Revenue() {
 
   useEffect(() => {
     const fetchApiRevenue = async (fromDate, toDate) => {
-      const response = await axios.get('http://54.164.6.175:4000/api/revenue', {
+      const response = await axios.get('http://localhost:4000/api/revenue', {
         params: {
           startDate: fromDate,
           endDate: toDate,
@@ -55,7 +55,7 @@ function Revenue() {
     };
 
     const fetchAPICustomers = async (fromDate, toDate) => {
-      const response = await axios.get('http://54.164.6.175:4000/api/revenue/customer', {
+      const response = await axios.get('http://localhost:4000/api/revenue/customer', {
         params: {
           startDate: fromDate,
           endDate: toDate,
@@ -68,7 +68,7 @@ function Revenue() {
       setPotentialCustomer(response.data.result.customers[0]);
     };
     const fetchAPIShoes = async (fromDate, toDate) => {
-      const response = await axios.get('http://54.164.6.175:4000/api/revenue/product', {
+      const response = await axios.get('http://localhost:4000/api/revenue/product', {
         params: {
           startDate: fromDate,
           endDate: toDate,
