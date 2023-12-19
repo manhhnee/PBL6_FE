@@ -14,7 +14,7 @@ function Admin({ children }) {
   const [infor, setInfor] = useState({});
 
   useEffect(() => {
-    fetch('http://54.164.6.175:4000/api/user/profile/me', {
+    fetch('http://localhost:4000/api/user/profile/me', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${GetToken()}`, // trả token về server để xử lí
