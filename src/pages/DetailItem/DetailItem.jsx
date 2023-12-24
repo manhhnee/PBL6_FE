@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Flip, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSpring, animated } from 'react-spring';
+import { loadStripe } from '@stripe/stripe-js';
 
 import Button from '~/components/Button';
 import { Icon } from '@iconify/react';
@@ -17,6 +18,17 @@ import InputForm from '~/components/InputForm';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
+
+let stripePromise;
+
+const getStripe = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(
+      'pk_test_51OQM1ZBP1UnENyZOHMj5QgCCsoOhwTxYpkwbqZVs5JqglFaJ7PoSIGXLaAgTSgVnDty6P25w5wgjh6c7ADER7ZjK00DN4OKt6U',
+    );
+  }
+  return stripePromise;
+};
 
 function DetailItem() {
   const [autocompleteInputValue, setAutocompleteInputValue] = useState('');
@@ -53,6 +65,33 @@ function DetailItem() {
 
     return isValid;
   };
+
+  const [stripeError, setStripeError] = useState(null);
+
+  const item = {
+    price: 'price_1OQm38BP1UnENyZOVIImO6f4',
+    quantity: 1,
+  };
+
+  const checkoutOptions = {
+    lineItems: [item],
+    mode: 'payment',
+    successUrl: `${window.location.origin}/success`,
+    cancelUrl: `${window.location.origin}/cancel`,
+  };
+
+  const redirectToCheckout = async () => {
+    console.log('redirectToCheckout');
+
+    const stripe = await getStripe();
+    const { error } = await stripe.redirectToCheckout(checkoutOptions);
+    console.log('Stripe checkout error', error);
+
+    if (error) setStripeError(error.message);
+  };
+
+  if (stripeError) alert(stripeError);
+
   function handleIncrement() {
     if (count >= 10) {
       setCount(10);
@@ -202,6 +241,9 @@ function DetailItem() {
             </div>
             <Button animation className={cx('btn-buy')} onClick={() => openModal()}>
               BUY NOW
+            </Button>
+            <Button animation className={cx('btn-buy')} onClick={redirectToCheckout}>
+              BUY NOW 1
             </Button>
             <Button
               animation

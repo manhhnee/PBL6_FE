@@ -1,8 +1,11 @@
+import '@stripe/stripe-js';
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { publicRoutes, adminRoutes } from '~/routes';
 import { DefaultLayout } from '~/layouts';
 import config from './config';
+import Success from './components/Success/Success';
+import Cancel from './components/Cancel/Cancel';
 
 function App() {
   return (
@@ -56,6 +59,8 @@ function App() {
               />
             );
           })}
+          <Route path="success" element={<Success />} />
+          <Route path="cancel" element={<Cancel />} />
         </Routes>
       </div>
     </Router>

@@ -13,7 +13,6 @@ const cx = classNames.bind(styles);
 function Revenue() {
   const [topCustomer, setTopCustomer] = useState([]);
   const [topShoes, setTopShoes] = useState([]);
-  const [potentialCustomer, setPotentialCustomer] = useState({});
   const [totalRevenue, setTotalRevenue] = useState();
   const [totalProfit, setTotalProfit] = useState();
 
@@ -65,7 +64,6 @@ function Revenue() {
         },
       });
       setTopCustomer(response.data.result.customers);
-      setPotentialCustomer(response.data.result.customers[0]);
     };
     const fetchAPIShoes = async (fromDate, toDate) => {
       const response = await axios.get('http://localhost:4000/api/revenue/product', {
