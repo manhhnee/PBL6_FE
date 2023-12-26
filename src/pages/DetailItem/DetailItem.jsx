@@ -117,7 +117,7 @@ function DetailItem() {
           toast.success(response.data.message);
         })
         .catch((error) => {
-          toast.error('Sth wrong !');
+          toast.error(error.message);
         });
     }
   };
@@ -146,12 +146,16 @@ function DetailItem() {
           },
         );
 
-        toast.success(response.data.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        if (response.data.success) {
+          toast.success(response.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          toast.error(response.data.message);
+        }
       } catch (error) {
-        toast.error(error.message || 'An error occurred while processing your request.');
+        toast.error('Quantity error !');
       }
     }
   };
