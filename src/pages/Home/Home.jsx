@@ -44,6 +44,7 @@ function Home() {
         ></img>
       </div>
       <div className={cx('categories')}>
+        <h2 className={cx('header')}>Category</h2>
         <div className={cx('list-category')}>
           {categories &&
             categories.map((category) => {
@@ -67,20 +68,23 @@ function Home() {
             })}
         </div>
       </div>
-      <div className={cx('list-item')}>
-        {shoes &&
-          shoes.map((shoe) => {
-            return (
-              <div className={cx('item')}>
-                <img src={shoe.image} className={cx('item-img')} alt="img"></img>
-                <div className={cx('item-overlay')}>
-                  <Link className={cx('item-icon')} to={`detailItem/${shoe.id}`}>
-                    <Icon icon="iconamoon:search-bold" />
-                  </Link>
+      <div className={cx('items')}>
+        <h2 className={cx('header')}>TOP 10</h2>
+        <div className={cx('list-item')}>
+          {shoes &&
+            shoes.map((shoe) => {
+              return (
+                <div className={cx('item')}>
+                  <img src={shoe.image} className={cx('item-img')} alt="img"></img>
+                  <div className={cx('item-overlay')}>
+                    <Link className={cx('item-icon')} to={`detailItem/${shoe.id}`}>
+                      <Icon icon="iconamoon:search-bold" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
       <div className={cx('btn-wrap')}>
         <div className={cx('custom-button-container')}>

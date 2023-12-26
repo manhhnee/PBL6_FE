@@ -7,7 +7,6 @@ import { Flip, ToastContainer, toast } from 'react-toastify';
 import ItemCart from '~/components/ItemCart';
 import Button from '~/components/Button';
 import Popup from '~/components/Popup';
-import PaypalAll from '~/components/PaypalAll';
 import AutoComplete from '~/components/AutoComplete/AutoComplete';
 import styles from './Cart.module.scss';
 import GetToken from '~/Token/GetToken';
@@ -18,11 +17,18 @@ const cx = classNames.bind(styles);
 
 function Cart() {
   const [autocompleteInputValue, setAutocompleteInputValue] = useState('');
+  const [autocompleteInputValue2, setAutocompleteInputValue2] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const [payload, setPayload] = useState({
+    phoneNumber: '',
+  });
+  const [payload2, setPayload2] = useState({
     phoneNumber: '',
   });
   const [errorMessages, setErrorMessages] = useState({
@@ -48,6 +54,10 @@ function Cart() {
   };
   const modalAnimation = useSpring({
     opacity: isModalOpen ? 1 : 0,
+  });
+
+  const modalAnimation2 = useSpring({
+    opacity: isModalOpen2 ? 1 : 0,
   });
 
   const handleItemSelect = (Item) => {
@@ -105,6 +115,60 @@ function Cart() {
     }
   };
 
+  const handleBuyWithStripe = async (address, phoneNumber) => {
+    if (orderItems.length === 0) {
+      toast.error('Please select items to pay');
+    } else {
+      try {
+        setIsLoading(true);
+
+        const ItemsPayload = orderItems.map((item) => {
+          return {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: item.Shoes.name,
+              },
+              unit_amount: parseInt(((item.Shoes.price / 23000) * 100).toFixed(2)),
+            },
+            quantity: item.cart_item_infor.quantity,
+          };
+        });
+        const orderItemsPayload = orderItems.map((item) => {
+          return {
+            id_size_item: item.id,
+            id_cartItem: item.cart_item_infor.id,
+            quantity: item.cart_item_infor.quantity,
+            price: item.Shoes.price,
+          };
+        });
+
+        const response = await axios.post(
+          'http://localhost:4000/api/payment',
+          {
+            items: ItemsPayload,
+            cart_size_items: orderItemsPayload,
+            address: address,
+            phoneNumber: phoneNumber,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${GetToken()}`,
+            },
+          },
+        );
+
+        toast.success(response.data.message);
+        setIsCompleted(true);
+        window.location.replace(response.data.url);
+      } catch (error) {
+        console.error(error.message);
+        toast.error('An error occurred. Please try again.');
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchApiCarts = async () => {
       const response = await axios.get(`http://localhost:4000/api/cart/details`, {
@@ -124,6 +188,14 @@ function Cart() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openModal2 = () => {
+    setIsModalOpen2(true);
+  };
+
+  const closeModal2 = () => {
+    setIsModalOpen2(false);
   };
 
   return (
@@ -158,8 +230,17 @@ function Cart() {
       )}
       {cartItems.length > 0 && (
         <div className={cx('options')}>
-          <Button className={cx('btn')} onClick={() => openModal()} primary>
+          <Button animation className={cx('btn')} onClick={() => openModal()} primary>
             Payment
+          </Button>
+          <Button
+            animation
+            className={cx('btn-buy')}
+            onClick={() => {
+              openModal2();
+            }}
+          >
+            BUY WITH STRIPE
           </Button>
         </div>
       )}
@@ -187,6 +268,39 @@ function Cart() {
             <Button
               onClick={() => {
                 handleOrderAll(autocompleteInputValue, payload.phoneNumber);
+              }}
+              outline
+            >
+              Confirm
+            </Button>
+          </div>
+        </animated.div>
+      </Popup>
+      <Popup isOpen={isModalOpen2} onRequestClose={() => closeModal2()} width={String('500px')} height={'350px'}>
+        <animated.div style={modalAnimation2}>
+          <h2>Payment confirmation</h2>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Enter address</div>
+            <AutoComplete setParentInputValue={setAutocompleteInputValue2} />
+          </div>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Enter phone number</div>
+            <InputForm
+              placeholder={'Enter phone number'}
+              type="text"
+              value={payload2.phoneNumber}
+              setValue={setPayload2}
+              name={'phoneNumber'}
+              className={cx('input')}
+              leftIcon={faPhone}
+            />
+          </div>
+          <div className={cx('options')}>
+            <Button
+              onClick={() => {
+                if (!isLoading && !isCompleted) {
+                  handleBuyWithStripe(autocompleteInputValue2, payload2.phoneNumber);
+                }
               }}
               outline
             >

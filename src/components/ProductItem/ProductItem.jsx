@@ -14,6 +14,13 @@ function ProductItem({ items }) {
       left: 0,
     });
   }
+  function formatCurrency(number) {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    });
+    return formatter.format(number);
+  }
   return (
     <div className={cx('book-items')}>
       <div className={cx('container')}>
@@ -23,7 +30,7 @@ function ProductItem({ items }) {
               <Link key={item.id} onClick={scrollToTop} to={`/detailItem/${item.id}`} className={cx('item')}>
                 <Image src={item.image} className={cx('img')} />
                 <div className={cx('title')}>{item.name}</div>
-                <div className={cx('price')}>{item.price}</div>
+                <div className={cx('price')}>{formatCurrency(item.price)}</div>
               </Link>
             );
           })}

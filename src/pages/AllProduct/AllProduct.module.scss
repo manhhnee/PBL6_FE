@@ -121,12 +121,12 @@
 
   &:hover {
     border-radius: 5px;
-    background-color: var(--gray);
-    color: var(--white);
+    background-color: var(--grey);
+    color: var(--black);
   }
 }
 
 .pagination-item.active {
-  background-color: var(--primary);
+  background-color: var(--red);
   color: var(--white);
 }

@@ -145,8 +145,8 @@ function AllBook() {
         </div>
       </div>
       <div className={cx('book-list')}>
+        <ProductItem items={shoes.length && shoes}></ProductItem>
         <ul className={cx('pagination')}>
-          <ProductItem items={shoes.length && shoes}></ProductItem>
           {pages.map((page, index) => {
             return (
               <Button

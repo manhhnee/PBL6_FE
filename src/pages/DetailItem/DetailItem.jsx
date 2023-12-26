@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Flip, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSpring, animated } from 'react-spring';
-import { loadStripe } from '@stripe/stripe-js';
 
 import Button from '~/components/Button';
 import { Icon } from '@iconify/react';
@@ -19,85 +18,84 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-let stripePromise;
-
-const getStripe = () => {
-  if (!stripePromise) {
-    stripePromise = loadStripe(
-      'pk_test_51OQM1ZBP1UnENyZOHMj5QgCCsoOhwTxYpkwbqZVs5JqglFaJ7PoSIGXLaAgTSgVnDty6P25w5wgjh6c7ADER7ZjK00DN4OKt6U',
-    );
-  }
-  return stripePromise;
-};
-
 function DetailItem() {
   const [autocompleteInputValue, setAutocompleteInputValue] = useState('');
+  const [autocompleteInputValue2, setAutocompleteInputValue2] = useState('');
   const { id } = useParams();
   const [count, setCount] = useState(1);
   const [shoe, setShoe] = useState({});
   const [shoeSize, setShoeSize] = useState([]);
   const [ratings, setRatings] = useState([]);
-  const [idSize, setIDSize] = useState({});
+  const [idSize, setIDSize] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [errorMessages, setErrorMessages] = useState({
-    address: '',
-  });
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [payload, setPayload] = useState({
+    phoneNumber: '',
+  });
+  const [payload2, setPayload2] = useState({
     phoneNumber: '',
   });
   const modalAnimation = useSpring({
     opacity: isModalOpen ? 1 : 0,
   });
-  const validateForm = () => {
-    let isValid = true;
-    const errors = {};
+  const modalAnimation2 = useSpring({
+    opacity: isModalOpen2 ? 1 : 0,
+  });
 
-    if (!autocompleteInputValue.trim()) {
-      errors.address = 'Please enter your order address!';
-      isValid = false;
+  //Handle Buy with Stripe
+  const handleBuyStripe = async (address, phoneNumber) => {
+    console.log(idSize, count, shoe.price, ((shoe.price / 23000) * 100).toFixed(2));
+    try {
+      setIsLoading(true);
+
+      const response = await axios.post(
+        'http://localhost:4000/api/payment',
+        {
+          items: [
+            {
+              price_data: {
+                currency: 'usd',
+                product_data: {
+                  name: shoe.name,
+                },
+                unit_amount: parseInt(((shoe.price / 23000) * 100).toFixed(2), 10),
+              },
+              quantity: count,
+            },
+          ],
+          size_items: {
+            id_size_item: idSize,
+            quantity: count,
+            price: shoe.price,
+          },
+
+          address: address,
+          phoneNumber: phoneNumber,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${GetToken()}`,
+          },
+        },
+      );
+
+      setIsCompleted(true);
+
+      // Chuyển hướng sau khi hoàn tất
+      window.location.replace(response.data.url);
+    } catch (err) {
+      console.log(err.message);
+      toast.error('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-    if (!payload.phoneNumber.trim()) {
-      errors.phoneNumber = 'Please enter your order phone number !';
-      isValid = false;
-    }
-
-    setErrorMessages(errors);
-
-    return isValid;
   };
-
-  const [stripeError, setStripeError] = useState(null);
-
-  const item = {
-    price: 'price_1OQm38BP1UnENyZOVIImO6f4',
-    quantity: 1,
-  };
-
-  const checkoutOptions = {
-    lineItems: [item],
-    mode: 'payment',
-    successUrl: `${window.location.origin}/success`,
-    cancelUrl: `${window.location.origin}/cancel`,
-  };
-
-  const redirectToCheckout = async () => {
-    console.log('redirectToCheckout');
-
-    const stripe = await getStripe();
-    const { error } = await stripe.redirectToCheckout(checkoutOptions);
-    console.log('Stripe checkout error', error);
-
-    if (error) setStripeError(error.message);
-  };
-
-  if (stripeError) alert(stripeError);
 
   function handleIncrement() {
-    if (count >= 10) {
-      setCount(10);
-    } else {
-      setCount(count + 1);
-    }
+    setCount(count + 1);
   }
 
   function handleDecrement() {
@@ -106,7 +104,6 @@ function DetailItem() {
     }
   }
   const handleAddToCart = async () => {
-    console.log(count, idSize);
     await axios
       .post(
         'http://localhost:4000/api/cart/add',
@@ -124,7 +121,7 @@ function DetailItem() {
         toast.success(response.data.message);
       })
       .catch((error) => {
-        toast.error(error.message);
+        toast.error('Vui lòng thử lại !');
       });
   };
 
@@ -168,7 +165,6 @@ function DetailItem() {
       setShoe(response.data.result);
       setShoeSize(response.data.result.Size_items);
       setRatings(response.data.result.rating);
-
       if (response.data.result.Size_items && response.data.result.Size_items.length > 0) {
         setIDSize(response.data.result.Size_items[0].id);
       }
@@ -183,8 +179,21 @@ function DetailItem() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const openModal2 = () => {
+    setIsModalOpen2(true);
+  };
 
-  console.log(idSize);
+  const closeModal2 = () => {
+    setIsModalOpen2(false);
+  };
+
+  function formatCurrency(number) {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    });
+    return formatter.format(number);
+  }
 
   return (
     <div className={cx('container')}>
@@ -208,7 +217,7 @@ function DetailItem() {
         <div className={cx('prouduct-info')}>
           <h1 className={cx('product-name')}>{shoe.name}</h1>
           <p className={cx('product-des')}>{shoe.description}</p>
-          <span className={cx('prouduct-price')}>{shoe.price}</span>
+          <span className={cx('prouduct-price')}>{formatCurrency(shoe.price)}</span>
           <div className={cx('product-cs')}>
             <div className={cx('product-color')}>
               <div className={cx('title')}>COLOR</div>
@@ -225,25 +234,43 @@ function DetailItem() {
                 value={idSize}
               >
                 {shoeSize &&
-                  shoeSize.map((size) => (
-                    <option key={size.id} className={cx('option')} value={size.id}>
-                      {size.size} - {size.amount} Product
-                    </option>
-                  ))}
+                  shoeSize.map((size) => {
+                    return (
+                      <option key={size.id} className={cx('option')} value={size.id}>
+                        {size.size} - {size.amount} Product
+                      </option>
+                    );
+                  })}
               </select>
             </div>
           </div>
           <div className={cx('product-cart')}>
             <div className={cx('product-quantity')}>
               <Icon className={cx('minus')} icon="typcn:minus" onClick={handleDecrement} />
-              <span className={cx('quantity')}>{count}</span>
+              <input
+                type="text"
+                className={cx('quantity')}
+                value={count}
+                onChange={(e) => {
+                  const newValue = parseInt(e.target.value);
+                  if (!isNaN(newValue) && newValue >= 0) {
+                    setCount(newValue);
+                  }
+                }}
+              />
               <Icon className={cx('plus')} icon="typcn:plus" onClick={handleIncrement} />
             </div>
             <Button animation className={cx('btn-buy')} onClick={() => openModal()}>
               BUY NOW
             </Button>
-            <Button animation className={cx('btn-buy')} onClick={redirectToCheckout}>
-              BUY NOW 1
+            <Button
+              animation
+              className={cx('btn-buy')}
+              onClick={() => {
+                openModal2();
+              }}
+            >
+              BUY WITH STRIPE
             </Button>
             <Button
               animation
@@ -278,6 +305,32 @@ function DetailItem() {
           </div>
           <div className={cx('options')}>
             <Button onClick={() => handleCreateOneOrder(shoe, autocompleteInputValue, payload.phoneNumber)} outline>
+              Confirm
+            </Button>
+          </div>
+        </animated.div>
+      </Popup>
+      <Popup isOpen={isModalOpen2} onRequestClose={() => closeModal2()} width={String('500px')} height={'350px'}>
+        <animated.div style={modalAnimation2}>
+          <h2>Payment confirmation</h2>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Enter address</div>
+            <AutoComplete setParentInputValue={setAutocompleteInputValue2} />
+          </div>
+          <div className={cx('input-field')}>
+            <div className={cx('header')}>Enter phone number</div>
+            <InputForm
+              placeholder={'Enter phone number'}
+              type="text"
+              value={payload2.phoneNumber}
+              setValue={setPayload2}
+              name={'phoneNumber'}
+              className={cx('input')}
+              leftIcon={faPhone}
+            />
+          </div>
+          <div className={cx('options')}>
+            <Button onClick={() => handleBuyStripe(autocompleteInputValue2, payload2.phoneNumber)} outline>
               Confirm
             </Button>
           </div>

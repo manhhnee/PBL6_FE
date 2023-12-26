@@ -66,9 +66,8 @@
 .options {
   padding-top: 20px;
   display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .payment-methods {
@@ -87,7 +86,6 @@
 }
 
 .btn {
-  margin-top: 22px;
   height: 40px;
 }
 
@@ -96,4 +94,9 @@
   color: var(--black);
   font-weight: 500;
   margin-top: 10px;
+}
+
+.btn-buy {
+  color: var(--white);
+  background-color: var(--red);
 }
