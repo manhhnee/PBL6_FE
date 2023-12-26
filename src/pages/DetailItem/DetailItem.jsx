@@ -29,8 +29,7 @@ function DetailItem() {
   const [idSize, setIDSize] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false);
+
   const [payload, setPayload] = useState({
     phoneNumber: '',
   });
@@ -46,51 +45,45 @@ function DetailItem() {
 
   //Handle Buy with Stripe
   const handleBuyStripe = async (address, phoneNumber) => {
-    console.log(idSize, count, shoe.price, ((shoe.price / 23000) * 100).toFixed(2));
-    try {
-      setIsLoading(true);
-
-      const response = await axios.post(
-        'http://localhost:4000/api/payment',
-        {
-          items: [
-            {
-              price_data: {
-                currency: 'usd',
-                product_data: {
-                  name: shoe.name,
+    if (!GetToken()) {
+      toast.warning('Please login to order !');
+    } else {
+      try {
+        const response = await axios.post(
+          'http://localhost:4000/api/payment',
+          {
+            items: [
+              {
+                price_data: {
+                  currency: 'usd',
+                  product_data: {
+                    name: shoe.name,
+                  },
+                  unit_amount: parseInt(((shoe.price / 23000) * 100).toFixed(2)),
                 },
-                unit_amount: parseInt(((shoe.price / 23000) * 100).toFixed(2), 10),
+                quantity: count,
               },
+            ],
+            size_items: {
+              id_size_item: idSize,
               quantity: count,
+              price: shoe.price,
             },
-          ],
-          size_items: {
-            id_size_item: idSize,
-            quantity: count,
-            price: shoe.price,
+
+            address: address,
+            phoneNumber: phoneNumber,
           },
-
-          address: address,
-          phoneNumber: phoneNumber,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${GetToken()}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${GetToken()}`,
+            },
           },
-        },
-      );
-
-      setIsCompleted(true);
-
-      // Chuyển hướng sau khi hoàn tất
-      window.location.replace(response.data.url);
-    } catch (err) {
-      console.log(err.message);
-      toast.error('An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
+        );
+        window.location.replace(response.data.url);
+      } catch (err) {
+        toast.error('Please try again !');
+      }
     }
   };
 
@@ -104,25 +97,29 @@ function DetailItem() {
     }
   }
   const handleAddToCart = async () => {
-    await axios
-      .post(
-        'http://localhost:4000/api/cart/add',
-        {
-          quantity: count,
-          id_size_item: idSize,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${GetToken()}`,
+    if (!GetToken()) {
+      toast.warning('Please login first !');
+    } else {
+      await axios
+        .post(
+          'http://localhost:4000/api/cart/add',
+          {
+            quantity: count,
+            id_size_item: idSize,
           },
-        },
-      )
-      .then((response) => {
-        toast.success(response.data.message);
-      })
-      .catch((error) => {
-        toast.error('Vui lòng thử lại !');
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${GetToken()}`,
+            },
+          },
+        )
+        .then((response) => {
+          toast.success(response.data.message);
+        })
+        .catch((error) => {
+          toast.error('Sth wrong !');
+        });
+    }
   };
 
   const handleCreateOneOrder = async (item, address, phoneNumber) => {
@@ -260,27 +257,20 @@ function DetailItem() {
               />
               <Icon className={cx('plus')} icon="typcn:plus" onClick={handleIncrement} />
             </div>
-            <Button animation className={cx('btn-buy')} onClick={() => openModal()}>
-              BUY NOW
-            </Button>
-            <Button
-              animation
-              className={cx('btn-buy')}
-              onClick={() => {
-                openModal2();
-              }}
-            >
-              BUY WITH STRIPE
-            </Button>
-            <Button
-              animation
-              className={cx('btn-add')}
+            <button className={cx('custom-btn', 'btn-5')} onClick={() => openModal()}>
+              <span>BUY NOW</span>
+            </button>
+            <button className={cx('custom-btn', 'btn-5')} onClick={() => openModal2()}>
+              <span>STRIPE</span>
+            </button>
+            <button
+              className={cx('custom-btn', 'btn-5')}
               onClick={() => {
                 handleAddToCart();
               }}
             >
-              ADD TO CART
-            </Button>
+              <span>ADD TO CART</span>
+            </button>
           </div>
         </div>
       </div>

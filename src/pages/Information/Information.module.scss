@@ -71,7 +71,6 @@
   width: 126px;
   height: 126px;
   border-radius: 9999px;
-  background-image: url('https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg');
 }
 
 .upload-btn {
@@ -92,6 +91,11 @@
     border-color: var(--text-color);
     background-color: #f5f5fb;
   }
+}
+
+.upload-field {
+  display: flex;
+  align-items: center;
 }
 
 .error-message {

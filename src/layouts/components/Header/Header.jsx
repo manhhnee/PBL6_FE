@@ -105,11 +105,11 @@ function Header() {
               </div>
             ) : (
               <div>
-                <button className={cx('login-btn')} onClick={() => goLogin(false)}>
-                  Login
+                <button className={cx('custom-btn', 'btn-3')} onClick={() => goLogin(false)}>
+                  <span>Login</span>
                 </button>
-                <button className={cx('register-btn')} onClick={() => goLogin(true)}>
-                  Register
+                <button className={cx('custom-btn', 'btn-3')} onClick={() => goLogin(true)}>
+                  <span>Register</span>
                 </button>
               </div>
             )}

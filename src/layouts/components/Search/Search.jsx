@@ -65,12 +65,15 @@ function Search() {
         render={(attrs) => (
           <div className={cx('search-result')} tabIndex="-1" {...attrs}>
             <div className={cx('wrapper')}>
-              <h4 className={cx('search-title')}>Book</h4>
+              <h4 className={cx('search-title')}>Shoes</h4>
               {searchResult &&
                 searchResult.map((result) => {
                   return (
-                    <Link className={cx('item-search')} to={`/detailItem/${result.id}`}>
-                      <img className={cx('image')} src={result.image} alt="Book" />
+                    <Link
+                      className={cx('item-search')}
+                      onClick={() => window.location.replace(`/detailItem/${result.id}`)}
+                    >
+                      <img className={cx('image')} src={result.image} alt="Shoes" />
                       <div className={cx('info')}>
                         <h4 className={cx('name')}>
                           <span>{result.name}</span>

@@ -247,11 +247,13 @@ function Information() {
           <div className={cx('text-field')}>
             <div className={cx('header')}>Your avatar</div>
             <div className={cx('input-field')}>
-              {avatar && <img src={image} className={cx('image')} alt="" />}
-              <label htmlFor="file-upload" className={cx('upload-btn')}>
-                <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon>
-                <input id="file-upload" type="file" onChange={handleImgChange}></input>
-              </label>
+              <div className={cx('upload-field')}>
+                {avatar && <img src={image} className={cx('image')} alt="Avatar" />}
+                <label htmlFor="file-upload" className={cx('upload-btn')}>
+                  <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon>
+                  <input id="file-upload" type="file" value={image} onChange={handleImgChange}></input>
+                </label>
+              </div>
               <Button
                 animation
                 className={cx('upd-ava')}
