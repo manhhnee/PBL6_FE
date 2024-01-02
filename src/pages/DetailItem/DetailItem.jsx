@@ -50,7 +50,7 @@ function DetailItem() {
     } else {
       try {
         const response = await axios.post(
-          'http://localhost:4000/api/payment',
+          'https://2hm-store.click/api/payment',
           {
             items: [
               {
@@ -102,7 +102,7 @@ function DetailItem() {
     } else {
       await axios
         .post(
-          'http://localhost:4000/api/cart/add',
+          'https://2hm-store.click/api/cart/add',
           {
             quantity: count,
             id_size_item: idSize,
@@ -128,7 +128,7 @@ function DetailItem() {
     } else {
       try {
         const response = await axios.post(
-          'http://localhost:4000/api/order/createOneItem',
+          'https://2hm-store.click/api/order/createOneItem',
           {
             Item: {
               id_size_item: idSize,
@@ -162,7 +162,7 @@ function DetailItem() {
 
   useEffect(() => {
     const getAPIDetailItem = async () => {
-      const response = await axios.get(`http://localhost:4000/api/shoes/${id}`);
+      const response = await axios.get(`https://2hm-store.click/api/shoes/${id}`);
       setShoe(response.data.result);
       setShoeSize(response.data.result.Size_items);
       setRatings(response.data.result.rating);
@@ -237,9 +237,11 @@ function DetailItem() {
                 {shoeSize &&
                   shoeSize.map((size) => {
                     return (
-                      <option key={size.id} className={cx('option')} value={size.id}>
-                        {size.size} - {size.amount} Product
-                      </option>
+                      <>
+                        <option key={size.id} className={cx('option')} value={size.id}>
+                          {size.size} - {size.amount} Product
+                        </option>
+                      </>
                     );
                   })}
               </select>

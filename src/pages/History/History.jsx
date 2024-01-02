@@ -20,7 +20,7 @@ function History() {
 
   useEffect(() => {
     const getApiHistoryOrder = async () => {
-      const response = await axios.get('http://localhost:4000/api/order/history', {
+      const response = await axios.get('https://2hm-store.click/api/order/history', {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },
@@ -35,7 +35,7 @@ function History() {
   const handleCancelOrder = async (id) => {
     await axios
       .put(
-        `http://localhost:4000/api/order/cancel/${id}`,
+        `https://2hm-store.click/api/order/cancel/${id}`,
         {},
         {
           headers: {

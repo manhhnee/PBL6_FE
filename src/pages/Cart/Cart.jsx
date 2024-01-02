@@ -91,7 +91,7 @@ function Cart() {
 
         await axios
           .post(
-            'http://localhost:4000/api/order/create',
+            'https://2hm-store.click/api/order/create',
             {
               cartItems: orderItemsPayload,
               address: address,
@@ -144,7 +144,7 @@ function Cart() {
         });
 
         const response = await axios.post(
-          'http://localhost:4000/api/payment',
+          'https://2hm-store.click/api/payment',
           {
             items: ItemsPayload,
             cart_size_items: orderItemsPayload,
@@ -171,7 +171,7 @@ function Cart() {
 
   useEffect(() => {
     const fetchApiCarts = async () => {
-      const response = await axios.get(`http://localhost:4000/api/cart/details`, {
+      const response = await axios.get(`https://2hm-store.click/api/cart/details`, {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },

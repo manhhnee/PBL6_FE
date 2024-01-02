@@ -28,7 +28,7 @@ function Header() {
   );
   const getAPIProfiler = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/user/profile/me', {
+      const response = await axios.get('https://2hm-store.click/api/user/profile/me', {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },

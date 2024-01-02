@@ -18,8 +18,14 @@
 //
 .wrapper {
   display: flex;
-  padding: 30px 0;
-  border-bottom: 1px solid var(--text-color);
+  padding: 30px 20px;
+  border-radius: 20px;
+  margin: 20px 0;
+  box-shadow: 5px 5px 5px 3px darkgray;
+  cursor: pointer;
+
+  &:hover {
+  }
 }
 
 .content-center {

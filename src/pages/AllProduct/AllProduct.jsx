@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,10 +7,10 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 import Button from '~/components/Button/Button';
-import ProductItem from '~/components/ProductItem';
 import config from '~/config';
 import styles from './AllProduct.module.scss';
 
+const ProductItem = React.lazy(() => import('~/components/ProductItem'));
 const cx = classNames.bind(styles);
 
 function AllBook() {
@@ -29,8 +29,6 @@ function AllBook() {
     return storedPage ? parseInt(storedPage) : 1;
   });
   let [totalPage, setTotalPage] = useState();
-
-  const pages = Array.from({ length: totalPage }, (_, index) => index + 1);
 
   const handlePageClick = (buttonId) => {
     setActiveButton(buttonId);
@@ -54,6 +52,12 @@ function AllBook() {
     window.location.href = newUrl;
   };
 
+  const pagesToShow = 10;
+
+  // Calculate the start and end pages
+  const startPage = Math.max(1, Math.min(page - Math.floor(pagesToShow / 2), totalPage - pagesToShow + 1));
+  const endPage = Math.min(startPage + pagesToShow - 1, totalPage);
+
   useEffect(() => {
     setActiveButton(page);
     localStorage.setItem('page', page);
@@ -62,19 +66,19 @@ function AllBook() {
   useEffect(() => {
     const fetchApiShoes = async () => {
       const response = await axios.get(
-        `http://localhost:4000/api/shoes?limit=100&category=${idCategory}&brand=${idBrand}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
+        `https://2hm-store.click/api/shoes?limit=100&category=${idCategory}&brand=${idBrand}&page=${page}&search=${searchValue}&isDesc=${descPrice}`,
       );
       setShoes(response.data.result);
       setTotalPage(response.data.totalPages);
     };
 
     const fetchApiCategories = async () => {
-      const response = await axios.get('http://localhost:4000/api/category/');
+      const response = await axios.get('https://2hm-store.click/api/category/');
       const categoriesData = await response.data.categories;
       setCategories(categoriesData);
     };
     const fetchApiBrands = async () => {
-      const response = await axios.get('http://localhost:4000/api/brand/');
+      const response = await axios.get('https://2hm-store.click/api/brand/');
       const brandsData = await response.data.brands;
       setBrands(brandsData);
     };
@@ -145,19 +149,36 @@ function AllBook() {
         </div>
       </div>
       <div className={cx('book-list')}>
-        <ProductItem items={shoes.length && shoes}></ProductItem>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <ProductItem items={shoes.length && shoes} />
+        </React.Suspense>
+
         <ul className={cx('pagination')}>
-          {pages.map((page, index) => {
-            return (
-              <Button
-                className={cx('pagination-item', `${activeButton === page ? 'active' : ''}`)}
-                onClick={() => handlePageClick(page)}
-                key={index}
-              >
-                {page}
+          {startPage > 1 && (
+            <>
+              <Button className={cx('pagination-item')} onClick={() => handlePageClick(1)}>
+                1
               </Button>
-            );
-          })}
+              {startPage > 2 && <span style={{ fontSize: '25px' }}>...</span>}
+            </>
+          )}
+          {Array.from({ length: pagesToShow }, (_, index) => startPage + index).map((pageNumber, index) => (
+            <Button
+              className={cx('pagination-item', `${activeButton === pageNumber ? 'active' : ''}`)}
+              onClick={() => handlePageClick(pageNumber)}
+              key={index}
+            >
+              {pageNumber}
+            </Button>
+          ))}
+          {endPage < totalPage && (
+            <>
+              {endPage < totalPage - 1 && <span style={{ fontSize: '25px' }}>...</span>}
+              <Button className={cx('pagination-item')} onClick={() => handlePageClick(totalPage)}>
+                {totalPage}
+              </Button>
+            </>
+          )}
         </ul>
       </div>
     </div>

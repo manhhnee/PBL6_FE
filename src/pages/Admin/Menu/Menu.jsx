@@ -1,13 +1,13 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRectangleList } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faHourglassHalf, faRectangleList } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Button from '~/components/Button';
 import config from '~/config';
 import styles from './Menu.module.scss';
-import { faFaceAngry } from '@fortawesome/free-solid-svg-icons';
+import { faFaceAngry, faStopwatch, faTruck } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +34,7 @@ function Menu() {
   }
   useEffect(() => {
     const getApiOrderPending = async () => {
-      const response = await axios.get('http://localhost:4000/api/order/All/status/1', {
+      const response = await axios.get('https://2hm-store.click/api/order/All/status/1', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -42,7 +42,7 @@ function Menu() {
       setCountPending(response.data.result.length);
     };
     const getApiOrderPreparing = async () => {
-      const response = await axios.get('http://localhost:4000/api/order/All/status/2', {
+      const response = await axios.get('https://2hm-store.click/api/order/All/status/2', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -50,7 +50,7 @@ function Menu() {
       setCountPreparing(response.data.result.length);
     };
     const getApiOrderDelivering = async () => {
-      const response = await axios.get('http://localhost:4000/api/order/All/status/3', {
+      const response = await axios.get('https://2hm-store.click/api/order/All/status/3', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -58,7 +58,7 @@ function Menu() {
       setCountDelivering(response.data.result.length);
     };
     const getApiOrderSuccess = async () => {
-      const response = await axios.get('http://localhost:4000/api/order/All/status/4', {
+      const response = await axios.get('https://2hm-store.click/api/order/All/status/4', {
         headers: {
           Authorization: `Bearer ${getJwtFromCookie()}`,
         },
@@ -73,28 +73,28 @@ function Menu() {
   return (
     <ul className={cx('box-info')}>
       <li onClick={() => window.location.replace(config.routes.adminPending)}>
-        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <FontAwesomeIcon className={cx('bx')} icon={faHourglassHalf}></FontAwesomeIcon>
         <span className={cx('text')}>
           <h3>{countPending}</h3>
           <p>Order is pending</p>
         </span>
       </li>
       <li onClick={() => window.location.replace(config.routes.adminWaiting)}>
-        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <FontAwesomeIcon className={cx('bx')} icon={faStopwatch}></FontAwesomeIcon>
         <span className={cx('text')}>
           <h3>{countPreparing}</h3>
           <p>Order is prepared</p>
         </span>
       </li>
       <li onClick={() => window.location.replace(config.routes.adminDelivering)}>
-        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <FontAwesomeIcon className={cx('bx')} icon={faTruck}></FontAwesomeIcon>
         <span className={cx('text')}>
           <h3>{countDelivering}</h3>
           <p>Order is delivered</p>
         </span>
       </li>
       <li onClick={() => window.location.replace(config.routes.adminSuccess)}>
-        <FontAwesomeIcon className={cx('bx')} icon={faRectangleList}></FontAwesomeIcon>
+        <FontAwesomeIcon className={cx('bx')} icon={faCheckCircle}></FontAwesomeIcon>
         <span className={cx('text')}>
           <h3>{countSuccess}</h3>
           <p>Order delivered successfully</p>

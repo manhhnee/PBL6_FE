@@ -99,7 +99,7 @@ function ManageShoe() {
 
   const getshoes = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/shoes?limit=10000');
+      const response = await axios.get('https://2hm-store.click/api/shoes?limit=10000');
       setShoes(response.data.result);
       setFilteredShoes(response.data.result);
     } catch (e) {
@@ -109,7 +109,7 @@ function ManageShoe() {
   const fetchApiDetailshoe = async (id) => {
     try {
       setIsModalOpen1(true);
-      const response = await axios.get(`http://localhost:4000/api/shoes/${id}`);
+      const response = await axios.get(`https://2hm-store.click/api/shoes/${id}`);
 
       const shoe = response.data.result;
 
@@ -129,13 +129,13 @@ function ManageShoe() {
   };
 
   const fetchApiCategories = async () => {
-    const response = await axios.get('http://localhost:4000/api/category');
+    const response = await axios.get('https://2hm-store.click/api/category');
     const categoriesData = await response.data.categories;
     setCategories(categoriesData);
   };
 
   const fetchApiBrand = async () => {
-    const response = await axios.get('http://localhost:4000/api/brand');
+    const response = await axios.get('https://2hm-store.click/api/brand');
     const brandData = await response.data.brands;
     setBrand(brandData);
   };
@@ -143,7 +143,7 @@ function ManageShoe() {
   const handleAddshoe = async (idCategory, idBrand, name, price, import_price, description, color, image) => {
     await axios
       .post(
-        'http://localhost:4000/api/shoes/add',
+        'https://2hm-store.click/api/shoes/add',
         {
           id_category: idCategory,
           id_brand: idBrand,
@@ -176,7 +176,7 @@ function ManageShoe() {
     try {
       await axios
         .post(
-          `http://localhost:4000/api/shoes/add_size/${shoeIDSize}`,
+          `https://2hm-store.click/api/shoes/add_size/${shoeIDSize}`,
           {
             amount: amount,
             size: size,
@@ -208,7 +208,7 @@ function ManageShoe() {
     } else {
       await axios
         .put(
-          `http://localhost:4000/api/shoes/updateInfor/${id}`,
+          `https://2hm-store.click/api/shoes/updateInfor/${id}`,
           {
             id_category: idCategory,
             id_brand: idBrand,
@@ -238,7 +238,7 @@ function ManageShoe() {
   };
   const handleDeleteshoe = async (id) => {
     await axios
-      .delete(`http://localhost:4000/api/shoes/delete/${id}`, {
+      .delete(`https://2hm-store.click/api/shoes/delete/${id}`, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${GetToken()}`,

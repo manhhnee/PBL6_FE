@@ -24,7 +24,7 @@ function Search() {
       return;
     }
     const fetchApi = async () => {
-      const response = await axios.get(`http://localhost:4000/api/shoes?search=${searchValue}&limit=5`);
+      const response = await axios.get(`https://2hm-store.click/api/shoes?search=${searchValue}&limit=5`);
       setSearchResult(response.data.result);
     };
 

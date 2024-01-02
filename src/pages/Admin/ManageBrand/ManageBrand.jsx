@@ -30,7 +30,7 @@ function ManageBrand() {
 
   useEffect(() => {
     const fetchApiBrand = async () => {
-      const response = await axios.get(`http://localhost:4000/api/brand`, {
+      const response = await axios.get(`https://2hm-store.click/api/brand`, {
         headers: {
           Authorization: `Bearer ${GetToken()}`,
         },
@@ -43,7 +43,7 @@ function ManageBrand() {
   const handleAddBrand = async (name, image) => {
     await axios
       .post(
-        'http://localhost:4000/api/brand/add',
+        'https://2hm-store.click/api/brand/add',
         {
           name: name,
           image: image,
@@ -68,7 +68,7 @@ function ManageBrand() {
 
   const handleDeleteBrand = async () => {
     await axios
-      .delete(`http://localhost:4000/api/brand/delete/${selectedBrandId}`, {
+      .delete(`https://2hm-store.click/api/brand/delete/${selectedBrandId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${GetToken()}`,
