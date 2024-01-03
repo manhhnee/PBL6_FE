@@ -17,9 +17,11 @@ const cx = classNames.bind(styles);
 
 function Information() {
   const [infor, setInfor] = useState({});
-  const [avatar, setAvatar] = useState({});
-  const [image, setImage] = useState('');
+  const [avatar, setAvatar] = useState([]);
+  const [image, setImage] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log(avatar);
 
   const [payload1, setPayload1] = useState({
     email: '',
@@ -46,7 +48,7 @@ function Information() {
         const user = response.data.user.inforUser;
         if (response.data.success === true) {
           setInfor(user);
-          setImage(user.Avatar);
+          setImage(user.avatar);
         } else {
           setInfor({});
         }
@@ -58,7 +60,7 @@ function Information() {
           phoneNumber: user.phoneNumber,
         }));
       } catch (error) {
-        console.log(error);
+        console.error('Error fetching profile:', error);
       }
     };
     fetchAPIProfile();
@@ -66,33 +68,26 @@ function Information() {
 
   const handleUpdateInfor = async () => {
     try {
-      await axios
-        .put(
-          `https://2hm-store.click/api/user/updateProfile`,
-          {
-            lastname: payload1.lastName,
-            firstname: payload1.firstName,
-            phoneNumber: payload1.phoneNumber,
+      const res = await axios.put(
+        'https://2hm-store.click/api/user/updateProfile',
+        {
+          lastname: payload1.lastName,
+          firstname: payload1.firstName,
+          phoneNumber: payload1.phoneNumber,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${GetToken()}`,
           },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${GetToken()}`,
-            },
-          },
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          setInfor({ ...infor, payload1 });
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        })
-        .catch((e) => {
-          toast.error(e.message);
-        });
+        },
+      );
+
+      toast.success(res.data.message);
+      setInfor({ ...infor, payload1 });
     } catch (error) {
-      console.log(error.message);
+      console.error('Error updating profile:', error);
+      toast.error(error.message || 'An error occurred.');
     }
   };
 
@@ -249,9 +244,9 @@ function Information() {
             <div className={cx('input-field')}>
               <div className={cx('upload-field')}>
                 {avatar && <img src={image} className={cx('image')} alt="Avatar" />}
-                <label htmlFor="file-upload" className={cx('upload-btn')}>
+                <label htmlFor="file-upload1" className={cx('upload-btn')}>
                   <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon>
-                  <input id="file-upload" type="file" value={image} onChange={handleImgChange}></input>
+                  <input id="file-upload1" type="file" onChange={(e) => handleImgChange(e)}></input>
                 </label>
               </div>
               <Button

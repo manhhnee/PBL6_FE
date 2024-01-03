@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
@@ -24,8 +24,10 @@ function Home() {
     };
     const fetchAPIShoes = async () => {
       try {
-        const response = await axios.get('https://2hm-store.click/api/shoes?limit=10');
-        setShoes(response.data.result);
+        const response = await axios.get(
+          'https://2hm-store.click/api/revenue/product?startDate=2020-01-01 00:00:00&endDate=2025-12-31 08:31:28',
+        );
+        setShoes(response.data.result.products);
       } catch (error) {
         console.log(error);
       }
@@ -33,7 +35,6 @@ function Home() {
     fetchAPICategories();
     fetchAPIShoes();
   }, []);
-  console.log(shoes);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('slide-bar')}>
@@ -75,7 +76,7 @@ function Home() {
             shoes.map((shoe) => {
               return (
                 <div className={cx('item')}>
-                  <img src={shoe.image} className={cx('item-img')} alt="img"></img>
+                  <img src={shoe.Image} className={cx('item-img')} alt="img"></img>
                   <div className={cx('item-overlay')}>
                     <Link className={cx('item-icon')} to={`detailItem/${shoe.id}`}>
                       <Icon icon="iconamoon:search-bold" />

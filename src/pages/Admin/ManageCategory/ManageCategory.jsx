@@ -211,7 +211,7 @@ function ManageCategory() {
               {avatar && <img src={image} className={cx('image')} alt="Avatar" />}
               <label htmlFor="file-upload" className={cx('upload-btn')}>
                 <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon>
-                <input id="file-upload" type="file" onChange={handleImgChange}></input>
+                <input id="file-upload" type="file" onChange={(e) => handleImgChange(e)}></input>
               </label>
             </div>
           </div>

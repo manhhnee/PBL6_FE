@@ -1,14 +1,15 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-import Order from '~/components/Order';
-import Menu from '~/pages/Admin/Menu';
 import styles from './AdminDelivering.module.scss';
 import GetToken from '~/Token/GetToken';
 
 const cx = classNames.bind(styles);
+
+const Order = React.lazy(() => import('~/components/Order'));
+const Menu = React.lazy(() => import('~/pages/Admin/Menu'));
 
 function AdminDelivering() {
   const [orderList, setOrderList] = useState([]);

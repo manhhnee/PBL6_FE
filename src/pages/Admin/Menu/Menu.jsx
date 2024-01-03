@@ -1,13 +1,12 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faHourglassHalf, faRectangleList } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faHourglassHalf } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Button from '~/components/Button';
 import config from '~/config';
 import styles from './Menu.module.scss';
-import { faFaceAngry, faStopwatch, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { faStopwatch, faTruck } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 

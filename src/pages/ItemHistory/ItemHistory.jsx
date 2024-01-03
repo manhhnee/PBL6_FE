@@ -196,7 +196,7 @@ function BookItemHistory() {
                         Rating
                       </Button>
                     ) : null}
-                    <Button to={`http://localhost:3000/detailItem/${order.Shoes.id}`} white className={cx('btn')}>
+                    <Button to={`/detailItem/${order.Shoes.id}`} white className={cx('btn')}>
                       Repurchase
                     </Button>
                   </div>

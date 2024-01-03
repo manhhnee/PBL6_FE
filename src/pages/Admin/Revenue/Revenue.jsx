@@ -18,7 +18,7 @@ function Revenue() {
 
   const [payload, setPayload] = useState({
     fromDate: '2023-01-01',
-    toDate: '2023-12-31',
+    toDate: '2024-12-31',
   });
 
   const [data, setData] = useState([]);

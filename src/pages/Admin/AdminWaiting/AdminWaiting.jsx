@@ -1,14 +1,15 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-import Menu from '~/pages/Admin/Menu';
-import Order from '~/components/Order';
 import styles from './AdminWaiting.module.scss';
 import GetToken from '~/Token/GetToken';
 
 const cx = classNames.bind(styles);
+
+const Order = React.lazy(() => import('~/components/Order'));
+const Menu = React.lazy(() => import('~/pages/Admin/Menu'));
 
 function AdminWaiting() {
   const [orderList, setOrderList] = useState([]);

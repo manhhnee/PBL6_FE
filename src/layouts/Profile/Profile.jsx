@@ -3,8 +3,6 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faUser } from '@fortawesome/free-regular-svg-icons';
 
-import Sidebar from '~/components/Sidebar';
-import Button from '~/components/Button';
 import styles from './Profile.module.scss';
 import config from '~/config';
 import { Link } from 'react-router-dom';

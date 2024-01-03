@@ -1,14 +1,15 @@
 import classNames from 'classnames/bind';
 import axios from 'axios';
 import { faBoxOpen, faCheckCircle, faSpinner, faTruckFast } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import Menu from '~/pages/Admin/Menu';
-import Order from '~/components/Order';
 import GetToken from '~/Token/GetToken';
 import styles from './AdminPending.module.scss';
 
 const cx = classNames.bind(styles);
+
+const Order = React.lazy(() => import('~/components/Order'));
+const Menu = React.lazy(() => import('~/pages/Admin/Menu'));
 
 function AdminPending() {
   const [orderList, setOrderList] = useState([]);

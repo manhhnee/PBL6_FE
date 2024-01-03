@@ -6,11 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-import Button from '~/components/Button/Button';
 import config from '~/config';
 import styles from './AllProduct.module.scss';
 
 const ProductItem = React.lazy(() => import('~/components/ProductItem'));
+import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function AllBook() {

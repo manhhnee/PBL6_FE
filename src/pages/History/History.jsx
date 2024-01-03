@@ -5,15 +5,16 @@ import { faCircleCheck, faSpinner, faTruckFast, faX } from '@fortawesome/free-so
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
 import { Flip, ToastContainer, toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import GetToken from '~/Token/GetToken';
-import Profile from '~/layouts/Profile';
-import Button from '~/components/Button/Button';
 import config from '~/config';
 import styles from './History.module.scss';
 
+import Button from '~/components/Button';
 const cx = classNames.bind(styles);
+
+const Profile = React.lazy(() => import('~/layouts/Profile'));
 
 function History() {
   const [historyOrder, setHistoryOrder] = useState([]);
