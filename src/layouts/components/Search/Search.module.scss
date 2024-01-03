@@ -115,3 +115,33 @@
   align-items: center;
   cursor: pointer;
 }
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header {
+  padding-left: 10px;
+  color: var(--red);
+  font-size: 25px;
+}
+
+.information {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 10px;
+  justify-content: space-between;
+  border-radius: 20px;
+
+  box-shadow: 3px 3px 3px var(--black);
+
+  &:hover {
+    box-shadow: 5px 5px 5px 5px var(--grey);
+  }
+}
+.order-image {
+  width: 100px;
+}
