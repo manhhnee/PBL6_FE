@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

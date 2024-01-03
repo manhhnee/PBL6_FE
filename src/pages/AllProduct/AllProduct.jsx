@@ -7,10 +7,10 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 import config from '~/config';
+import Button from '~/components/Button';
 import styles from './AllProduct.module.scss';
 
 const ProductItem = React.lazy(() => import('~/components/ProductItem'));
-import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function AllBook() {

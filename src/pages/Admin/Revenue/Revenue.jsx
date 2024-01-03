@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
