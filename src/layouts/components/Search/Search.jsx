@@ -71,7 +71,7 @@ function Search() {
     const formData = new FormData();
     formData.append('image', file);
     try {
-      const response = await axios.post('http://localhost:5000/upload', formData, {
+      const response = await axios.post('https://45d3-117-2-255-218.ngrok-free.app/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
